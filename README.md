@@ -12,9 +12,9 @@
 
 ### BILLING ALARM
 
-### S3 OBJECT STORE
+### S3 OBJECT STORE ( READ S3 FAQs Before the Exam )
 * S3 is object store. Safe place to store objects in cloud
-* S3 has two models - Read after write consistency for PUTS of new objects, Eventual consistency - Override PUTS and Deletes. 
+* S3 has two models - 1. Read after write consistency for PUTS of new objects, 2.Eventual consistency - Override PUTS and Deletes. 
 * S3 has tiered storage. Need to know details of different tiers. 
   * S3 STANDARD 
   * S3 - IA(Infrequently Accessed)
@@ -25,5 +25,17 @@
 * Life cycle management and versioning.
 * MFA for deleting the object.
 * S3 changes on storage,request, cross region replication, transfer acceleration etc.
+
+### S3 OBJECT STORE LAB
+* Encryption in transit is achieved by SSL/TLS
+* Encryption at rest (server side) is achieved by - S3 Managed Key- SSE-S3; AWS Key Managment Service - Managed Key- SSE-KMS and Customer Managed keys: SSE -C
+* Client Side Encryption.
+
+### S3 CROSS REGION REPLICATION
+* Versioning much be enabled in both the source and destination
+* Regions must be unique
+* Files in existing buckets are not replicated automatically, all subsequently uploaded files will be replicated.
+* Delete markers are not replicated.
+
 
 
