@@ -13,6 +13,7 @@
 ### BILLING ALARM
 
 ### S3 OBJECT STORE ( READ S3 FAQs Before the Exam )
+### S3 FAQs for Exam : https://aws.amazon.com/s3/faqs/#s3ta
 * S3 is object store. Safe place to store objects in cloud
 * S3 has two models - 1. Read after write consistency for PUTS of new objects, 2.Eventual consistency - Override PUTS and Deletes. 
 * S3 has tiered storage. Need to know details of different tiers. 
