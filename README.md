@@ -37,5 +37,30 @@
 * Files in existing buckets are not replicated automatically, all subsequently uploaded files will be replicated.
 * Delete markers are not replicated.
 
+### CLOUDFRONT (CDN)
+* Edge Location - This is the location where content will be cached. This is seperate to AWS Region /AZ.
+* ORIGIN - This is basically the source of all the files that CDN will distribute. This can be S3,EC2, elastic load balancer of Route53.
+* Distribution (Name given to CDN which consist of collection of edge locations) can be web distribution or RTMP - Media Streaming distribution.
+* Objects are cached to TTL (Time to Live)
+
+### STORAGE GATEWAY
+* Its is a service that connects on-premise software appliance with cloud based storage to provide seamless and secure integration
+between organization on-premise IT environment and AWS storage infrastructure. 
+* File Gateways, Volume Gateways- Cached volumes, Volume Gateways- Tape Volumes(VTL)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
