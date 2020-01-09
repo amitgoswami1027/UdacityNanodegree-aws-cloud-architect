@@ -2,9 +2,6 @@
 
 Notes prepared while doing the online course on AWS Associate Solutions Architect.
  
-These notes are a mixture of notes from a course taught by [Ryan Kroonenburg](https://www.udemy.com/user/ryankroonenburg/),
-and one taught by [Eissa](https://www.udemy.com/aws-certified-solutions-architect-associate-exam/) 
-
 ### AWS Solutions Architect-Introduction:
 - [Example exam blueprint](https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS%20Certified%20Solutions%20Architect%20-%20Associate%20Exam%20Guide_v1.1_2019_08_27_FINAL.pdf)
 - [March 2020 Updated version](https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS%20Certified%20Solutions%20Architect%20-%20Associate%20Exam%20Guide_v1.1_2019_08_27_FINAL.pdf)
