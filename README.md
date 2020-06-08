@@ -157,3 +157,115 @@ cloudwatch-metrics.html
 * Atlassian Incident Handbook : https://www.atlassian.com/incident-management/handbook/postmortems#postmortem-issue-fields
 * GitHub Post-incident analysis: https://github.blog/2018-10-30-oct21-post-incident-analysis/
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
+
+================================================================================================
+
+## DESIGN FOR PEROFRMANCE AND SCALIBILITY
+#### Key Points
+* Moving to the cloud doesn’t guarantee that your application will be faster and cost less to operate. In fact, without the 
+proper baseline metrics, you won’t know where to start when planning your move.
+* Most performance issues can be traced to the application itself and some applications will need to be redesigned to be cloud 
+native in order to achieve truly optimized performance. Common causes of performance issues:
+  * Poorly designed applications
+  * Database design constraints
+  * Inefficient network routes
+* Moving to the cloud should improve network response times. Global edge cache locations can bring the server closer to the end user.
+
+#### Examples Of Cloud Migration Goals:
+* We are migrating to the cloud to reduce our infrastructure costs by 25%
+* We believe that by hosting our application in AWS, we will be able to deliver download speeds that are 60% faster than our 
+baseline
+* We are going to duplicate our infrastructure in the cloud and maintain our AWS account as a warm backup site for disaster 
+recovery
+* We are consolidating our data centers and moving to the cloud because our AWS account will provide one centralized view into 
+our environment with more visibility into how our compute spend is being utilized.
+
+### PREREQUISITIES FOR COURSE
+* VSCode 	https://code.visualstudio.com
+* Create an AWS Account 	https://portal.aws.amazon.com/billing/signup
+* AWS CLI 	https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+* Terraform 	https://learn.hashicorp.com/terraform/getting-started/install.html
+* LucidChart 	https://www.lucidchart.com
+
+### INSTALLATIONS
+* AWS CLI INSTALLATIONS: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+* TERRAFORM INSTALLATIONS: https://learn.hashicorp.com/terraform/getting-started/install.html
+* DIAGRAM APPLICATION: https://www.lucidchart.com/
+
+## A. COST AND MONITORING
+### How the AWS Cost Structure Works : Three Ways to Calculate AWS Costs
+* Simple Monthly Calculator - allows you to explore AWS services, model solutions, and create estimates for the cost of your use cases on AWS 
+* TCO Calculator - used to compare the cost of running your applications in an on-premises or colocation environment to AWS 
+* AWS Pricing Calculator (NEW- replaces the Simple Monthly Calculator) 
+* AWS PRICING CAL: https://docs.aws.amazon.com/pricing-calculator/latest/userguide/what-is-pricing-calculator.html
+* https://calculator.aws/#/
+* VPC PEERING : https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+
+An accurate cost estimation that meets and exceeds your organization’s budgetary goals requires you to ask important questions, interpret data, and implement AWS best practices
+
+#### Paid AWS Cloud Services include:
+* Running Compute Resources
+* Storage
+* Provisioned Databases
+* Data Transfer
+
+Remember, you only pay for services you use, and once you stop using them, AWS stops charging you immediately and doesn’t levy any termination fees. 
+
+### AWS does not charge for:
+* AWS Elastic Beanstalk - Rapid application deployment
+* AWS Cloud Formation - AWS Branded Infrastructure as Code service
+* Auto-Scaling - Scaling EC2 instances up/down or in/out based on your application requirements
+* AWS IAM - User and access management
+
+There is no cost for uploading data into the AWS cloud, although you will pay for storage and data transfer back out. Because of the massive scale of the AWS technology platform, there is no limit to how much data you can upload. 
+
+### INSTANCE PRICING
+AWS EC2 instance pricing is straightforward, but it can quickly become complex when you take up the task of optimizing your environment to achieve the ideal cost/performance balance.
+* Explore OS licensing pricing and options
+* Limit the users and roles that can launch production instances
+* Choose the best instance for your workload
+* Save by moving to new generation instances when available
+* When optimizing your computing usage to reduce your monthly spend, one of the first places you want to count your costs is 
+in your EC2 instances, and one of the best resources here is using reserved instances. 
+
+#### Reserved and Spot Instances
+* Reserved instances offer a savings of almost 70% in some cases. In exchange for an upfront commitment of 1 or 3 years, AWS 
+offers significant savings, which increases a bit depending on how you choose to pay. Paying in advance will save you even 
+more.
+* Spot instances can potentially save customers 90% of AWS on-demand EC2 instance pricing, but there are some significant 
+drawbacks. AWS can terminate a spot instance that is running below the current spot call price at any time after providing you 
+with a 2-minute warning.
+
+### STORAGE OPTIONs
+Selecting the right storage is the key to both satisfied customers and high-performing databases. In general you should select storage based on the following criteria:
+#### SSD Solid State Drives
+* Use flash memory to deliver superior performance and durability without moving parts
+* More durable, run cooler and use less energy
+* Best for i/o intensive applications and database services and boot volumes
+#### HDD Hard Disk Drives
+* Proven technology
+* Typically less expensive than solid state drives for the same amount of storage
+* Available with more storage space than SSDs
+* Best for throughput intensive workloads like big data analysis and log processing
+
+#### The best storage type for a throughput intensive big-data workload: Throughput optimized HDD.
+#### Create a Lifecycle Policy
+Your company provides media storage for people who are almost famous on the internet. They upload photos and videos daily which receive hundreds of initial views, but not many users view them after a few days. The service you provide is free, and your not-quite famous customers understand you will delete their files in 180 days.
+
+Design and implement a cost effective lifecycle policy for this scenario.
+My Solution: Your solution might be different, but here is what I came up with:
+* Store the media files in S3 standard for 30 days, then move files to S3 IA
+* Store the media files in S3 IA for 60 days, then move to S3 Glacier and pay AWS for provisioned expedited retrieval if 
+necessary
+* Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
+
+
+
+### IMPORTANT LINKS FOR READING
+* CLOUD MIGRATION : https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
+* CLOUD MIGRATION WITH AWS : https://aws.amazon.com/cloud-migration/
+* AWS BLOGS: https://aws.amazon.com/blogs/aws/
+* AWS RELEASE NOTES: https://aws.amazon.com/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc
+* AWS INSIDER: https://awsinsider.net/Home.aspx
+* AWS REDDITT: https://www.reddit.com/r/aws/
+
