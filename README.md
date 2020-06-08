@@ -268,4 +268,5 @@ necessary
 * AWS RELEASE NOTES: https://aws.amazon.com/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&wn-featured-announcements.sort-by=item.additionalFields.numericSort&wn-featured-announcements.sort-order=asc
 * AWS INSIDER: https://awsinsider.net/Home.aspx
 * AWS REDDITT: https://www.reddit.com/r/aws/
-
+* AWS OUTPOST: https://aws.amazon.com/outposts/
+* AWS SNOWBALL: https://aws.amazon.com/snowball/
