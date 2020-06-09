@@ -51,16 +51,19 @@ In order to achieve the highest levels of durability and availability in AWS you
 ![Create VPC](screenshots/Secondary_VPC.png "Secondary VPC")
 
 ### Highly durable RDS Database
-1. Create a new RDS Subnet group in the active and standby region. https://knowledge.udacity.com/questions/223913
-2. Create a new MySQL, multi-AZ database in the active region. The database must:
+1. Create a new RDS Subnet group in the active(us-east-1) and standby(us-west-1) region. -Done
+   ### DB subnet group creation
+   * [us-east-1] : RDS Screen, create the Primary DB subnet group. Choose the private subnets while creating the DB Subnet group.
+   * [us-west-1] : RDS Screen, create the Secondary DB subnet group. Choose the private subnets while creating the DB Subnet group.
+2. Create a new MySQL, multi-AZ database in the active(us-east-1) region. The database must:
      - Be a “burstable” instance class.
      - Have only the “UDARR-Database” security group.
      - Have an initial database called “udacity.”
-3. Create a read replica database in the standby region. This database has the same requirements as the database in the active region. 
+3. Create a read replica database in the standby(us-west-1) region. This database has the same requirements as the database in the 
+   active region. 
 
 **SAVE** screenshots of the configuration of the databases in the active and secondary region after they are created. 
 **SAVE** screenshots of the configuration of the database subnet groups as well as route tables associated with those subnets. Name the screenshots: primaryDB_config.png, secondaryDB_config.png, primaryDB_subnetgroup.png, secondaryDB_subnetgroup.png, primaryVPC_subnets.png, secondaryVPC_subnets.png, primary_subnet_routing.png, secondary_subnet_routing.png
-
 
 ### Estimate availability of this configuration
 Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
@@ -73,13 +76,26 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
 **SAVE** your answers in a text file named "estimates.txt"
 
 ### Demonstrate normal usage
-In the active region:
+In the active region(us-east-1):
 1. Create an EC2 keypair in the region
 2. Launch an Amazon Linux EC2 instance in the active region. Configure the instance to use the VPC's public subnet and security group ("UDARR-Application"). 
 3. SSH to the instance and connect to the "udacity" database in the RDS instance. 
+   * Connect to the EC2 instance using putty.
+   * aws configure, to configure the aws cli credentials.
+   * sudo yum updates
+   * Install mysql client
+   * mysql -u udacity1 -p -h udacity1.cvqgygxhhehg.us-east-1.rds.amazonaws.com
+   * Other Commands
+     ```
+     wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+     RDSHOST="udacity1.cvqgygxhhehg.us-east-1.rds.amazonaws.com"
+     TOKEN="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 3306 --region us-east-1a --username amitgoswami1027)"
+     mysql --host=$RDSHOST --port=3306 --ssl-ca=rds-combined-ca-bundle.pem --user=amitgoswami1027 --password=$TOKEN
+     ```
 4. Verify that you can create a table, insert data, and read data from the database. 
+   
 5. You have now demonstrated that you can read and write to the primary database
-https://knowledge.udacity.com/questions/179354
+
 **SAVE** the log of connecting to the database, creating the table, writing to and reading from the table in a text file called "log_primary.txt"
 
 ### Monitor database
