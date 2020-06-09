@@ -93,8 +93,16 @@ In the active region(us-east-1):
      mysql --host=$RDSHOST --port=3306 --ssl-ca=rds-combined-ca-bundle.pem --user=amitgoswami1027 --password=$TOKEN
      ```
 4. Verify that you can create a table, insert data, and read data from the database. 
-   
+   * One MySQL Prompt, select the database by running the command: "USE udacity1"
+   ```
+   CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20), species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+   INSERT INTO pet VALUES ('Puffball','Diane','hamster','f','1999-03-30',NULL);
+   INSERT INTO pet VALUES ('Puffball1','Amit','german','f','1999-03-30',NULL);
+   INSERT INTO pet VALUES ('Puffball2','Sumit','germanshperd','f','1999-03-30',NULL);
+   SELECT * from pet;
+   ```
 5. You have now demonstrated that you can read and write to the primary database
+https://dev.mysql.com/doc/refman/5.7/en/getting-information.html
 
 **SAVE** the log of connecting to the database, creating the table, writing to and reading from the table in a text file called "log_primary.txt"
 
