@@ -1,4 +1,50 @@
 ## AWS CLOUD ARCHITECT - Nanodegree 
+
+### Review Comments for the Project-1 - Data Durability and Recovery
+#### Review-01: Screenshot of a MySQL database configured to run in multiple availability zones in the "Primary" VPC. Database must have automatic backups enabled and be in a private subnet.Screenshot of route tables for the configured database subnets.
+* [Comment] : primary_subnet_routing.png should show the routing for the private sunbet. primaryDB_config.png should show the 
+Configuration tab and the multi-az parameter as 'Yes'.
+* [private subnet.Screenshot]
+  ![image](https://user-images.githubusercontent.com/13011167/84282342-410b8580-ab57-11ea-9886-d1f9e4bc7b18.png)
+  ![image](https://user-images.githubusercontent.com/13011167/84282457-67312580-ab57-11ea-9f13-e95256c31b5b.png)
+* [primaryDB_config- primaryDB_config.png should show the Configuration tab and the multi-az parameter as 'Yes']
+  ![image](https://user-images.githubusercontent.com/13011167/84282746-c5f69f00-ab57-11ea-9237-07fc08da122d.png)
+#### Review-02: Screenshot of a read-replica MySQL database configured to run in the "Secondary" VPC. Database must be in a private subnet. Screenshot of route tables for the configured database subnets
+* [Comment]:Secondary_subnet_routing.png should show the routing for the private sunbet.Secondary_config.png should show the 
+Configuration tab.
+* [Secondary_subnet_routing]
+  ![image](https://user-images.githubusercontent.com/13011167/84283125-3f8e8d00-ab58-11ea-9ddc-a4abc92fd18e.png)
+  ![image](https://user-images.githubusercontent.com/13011167/84283197-58973e00-ab58-11ea-9f9a-70d464dc1b12.png)
+* [Secondary_config.png should show the Configuration tab.]
+  ![image](https://user-images.githubusercontent.com/13011167/84292955-b7fb4b00-ab64-11ea-9f5b-ec7903668b6b.png)
+#### Review-03 : Paragraph describing the Recovery Time Objective (RTO) and Recovery Point Objective (RPO) of this database configuration.
+*[Comment] :Re-think this part. You're expected to provide estimate in minutes / hours for each case.
+Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
+1. Minimum RTO for a single AZ outage : 
+2. Minimum RTO for a single region outage
+3. Minimum RPO for a single AZ outage
+4. Minimum RPO for a single region outage
+```
+RTO (Recovery Time Objective) - amount of time it takes for your business to recover from outage or disruption. TIME - time to fix 
+the problem, recover itself and testing etc.
+RPO (Recovery Point Objective) - how much data can your organization afford to loose during the outage. 
+Minimum RTO/RPO for a single AZ outage : AWS does transactional log backups every 5 minutes and in any case you can restore state of your instance to the time you want, having regard to above mentioned 5 minute intervals and a retention period – you cannot restore to the state older than then oldest snapshot. RPO of RDS instance is 5 minutes.
+Most database administrators employ a combination of Full + Transaction Log or Full + Differential +
+Transaction Log backups to meet RPOs and keep backups within available maintenance windows. As an
+example, full backups may be run once a week with differential backups run daily, in-between. Transaction
+log backups are run based on RPO needs (e.g. every 15 minutes). 
+
+Minimum RTO/RPO for a single region outage:
+
+```
+#### Review-04: Screenshot of “Database connections” metric of database. Screenshot showing database replica configuration.
+* [Comment]: monitoring_replication.png should show the replication status as 'Replicating'
+  ![image](https://user-images.githubusercontent.com/13011167/84292707-5804a480-ab64-11ea-8f8d-9e6e600a66f2.png)
+#### Review-05: Screenshot of the read-replica database before promotion.,Another screenshot after promotion. Log of the student connecting to, reading from, and writing to the database in the standby region, after promotion.
+* [Comment] : Can you please provide screenshot for the database before and after the promotion. I only see rr_after_promotion.png.
+* screenshots/log_rr_before_promotion.doc & screenshots/log_rr_after_promotion.doc have the details related to the before and after 
+ promotion.
+
 # Project01
 # Data Durability and Recovery
 In this project you will create highly available solutions to common use cases. You will build a Multi-AvailabilityZone, Multi-Region database and show how to use it in multiple geographically separate AWS regions. You will also build a website hosting solution that is versioned so that any data destruction and accidents can be quickly and easily undone.
@@ -222,6 +268,6 @@ You will now need to “recover” the object:
 * Atlassian Incident Handbook : https://www.atlassian.com/incident-management/handbook/postmortems#postmortem-issue-fields
 * GitHub Post-incident analysis: https://github.blog/2018-10-30-oct21-post-incident-analysis/
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
-
-
+* https://acloud.guru/forums/aws-certified-solutions-architect-professional/discussion/-Kd8syzv_aNQL4rjvP5A/i_passed_certified_solutions_a
+* RTO/RPO : https://cdn2.hubspot.net/hubfs/2512652/CloudBerry_Lab_Whitepaper_A_Complete_Guide_for_Backup_and_DR_on_AWS.pdf
 
