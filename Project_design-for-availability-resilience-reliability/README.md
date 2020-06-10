@@ -24,19 +24,20 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
 2. Minimum RTO for a single region outage
 3. Minimum RPO for a single AZ outage
 4. Minimum RPO for a single region outage
-```
-RTO (Recovery Time Objective) - amount of time it takes for your business to recover from outage or disruption. TIME - time to fix 
-the problem, recover itself and testing etc.
-RPO (Recovery Point Objective) - how much data can your organization afford to loose during the outage. 
-Minimum RTO/RPO for a single AZ outage : AWS does transactional log backups every 5 minutes and in any case you can restore state of your instance to the time you want, having regard to above mentioned 5 minute intervals and a retention period – you cannot restore to the state older than then oldest snapshot. RPO of RDS instance is 5 minutes.
-Most database administrators employ a combination of Full + Transaction Log or Full + Differential +
-Transaction Log backups to meet RPOs and keep backups within available maintenance windows. As an
-example, full backups may be run once a week with differential backups run daily, in-between. Transaction
-log backups are run based on RPO needs (e.g. every 15 minutes). 
+[My Thoughts on the same]
+* If an RDS database instance's volumes are lost, requiring recreating it from backup, then the RPO for Single-AZ, Multi-AZ, and even 
+  is typically around 5 minutes. That is the target interval for RDS to perform log backups to S3, so on a database volume loss you 
+  could have 5 minutes of log data that is also lost. There is no way to change the log backup interval.
+* With Single-AZ the only live copy of your data is the EBS volume that holds the data for the instance. While EBS uses mirroring of 
+  data under the covers to provide durability and availability, there are several scenarios where you would have no choice other than to 
+  recover from backups. In this case you might want to apply the 5 minute log backup interval as your RPO.
+* With Multi-AZ the odds of data loss go way down because we have a separate synchronous copy of the volume being maintained in a 
+  separate data center (AZ). If the primary instance fails, we failover to the secondary instance with no data loss.Since volume-level 
+  replication is used, a corruption on the primary's volume may be replicated to the secondary's volume. I believe most customers think 
+  of Multi-AZ as having an RTO of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. Again putting this into 
+  more traditional terms, even if a natural disaster were to destroy the data center housing the primary, the secondary would take over 
+  with no data loss. So assuming an RPO of 0 makes sense.
 
-Minimum RTO/RPO for a single region outage:
-
-```
 #### Review-04: Screenshot of “Database connections” metric of database. Screenshot showing database replica configuration.
 * [Comment]: monitoring_replication.png should show the replication status as 'Replicating'
   ![image](https://user-images.githubusercontent.com/13011167/84292707-5804a480-ab64-11ea-8f8d-9e6e600a66f2.png)
@@ -107,29 +108,7 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
 2. Minimum RTO for a single region outage
 3. Minimum RPO for a single AZ outage
 4. Minimum RPO for a single region outage
-```
-(Enclosed attachment for more details)
-Amazon Web Services (AWS) customers rely on Amazon Relational Database Service (Amazon RDS) to store their data for all kinds 
-of workloads. For high availability (HA), you can use the Multi-AZ feature of Amazon RDS to provide additional resiliency by 
-maintaining two copies of data across different Availability Zones (AZs). 
-Failures are rare, but as a best practice, applications should design around potential failures. The RDS Multi-AZ configuration is 
-the recommended approach for production environments due to its ability to support low RTO (recovery time objective) and RPO (recovery point objective) requirements. RTO is the targeted amount of time for a recovery to complete in the event of failure. RPO is 
-the targeted amount of time during which data is at risk for loss in the event of a failure.
-Single-AZ configurations - With millions of active customers using AWS monthly, there are some customer workloads that do not require
-the level of HA provided by RDS Multi-AZ and the additional costs associated with it. These workloads might have more relaxed RTO and
-RPO requirements, and Single-AZ configurations might be sufficient to meet those needs. 
-RTO for recovery with an RDS Single-AZ instance failure can vary from minutes to hours. The duration depends on the size of the database
-and the failure and recovery approach required, as described later in this post.
-RPO for recovery with an RDS Single-AZ instance failure is typically 5 minutes (the interval required for copying transaction logs to
-Amazon S3), but it can vary. 
-When we design and plan for failure with an RDS Single-AZ instance, we look at the following scenarios:
-•	Recoverable instance failure – The individual EC2 node suffered a hardware failure but could be recovered automatically by RDS.
-•	Non-recoverable instance failure – The individual EC2 node suffered a hardware failure but could not be recovered automatically by
-RDS.
-•	EBS volume failure – The EBS volume suffered a data loss failure.
-•	Availability Zone disruption – Failure at the Availability Zone level that would affect the RDS instance.
-Ref: https://blogs.cornell.edu/cloudification/category/devops/
-```
+
 ##### [Enclosed snapshots screenshots/]
 **SAVE** your answers in a text file named "estimates.txt"
 
@@ -270,4 +249,4 @@ You will now need to “recover” the object:
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
 * https://acloud.guru/forums/aws-certified-solutions-architect-professional/discussion/-Kd8syzv_aNQL4rjvP5A/i_passed_certified_solutions_a
 * RTO/RPO : https://cdn2.hubspot.net/hubfs/2512652/CloudBerry_Lab_Whitepaper_A_Complete_Guide_for_Backup_and_DR_on_AWS.pdf
-
+* RTO/RPO Imp Read: https://forums.aws.amazon.com/thread.jspa?threadID=310192
