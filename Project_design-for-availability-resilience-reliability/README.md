@@ -1,4 +1,4 @@
-## AWS CLOUD ARCHITECT - NanoDegree 
+## AWS CLOUD ARCHITECT - Nanodegree 
 ## Project01
 ## Data durability and recovery
 In this project you will create highly available solutions to common use cases.  You will build a Multi-AvailabilityZone, Multi-Region database and show how to use it in multiple geographically separate AWS regions.  You will also build a website hosting solution that is versioned so that any data destruction and accidents can be quickly and easily undone.
@@ -140,10 +140,13 @@ In the standby region:
 5. You have now demonstrated that you can only read from the read replica database.
 
 **SAVE** log of connecting to the database, writing to and reading from the table in a text file called "log_rr_before_promotion.txt"
+
 ![CONNECTING TO THE REPLICA OF DB](https://user-images.githubusercontent.com/13011167/84263956-0812e700-ab3e-11ea-9a14-ea5190366fdf.png)
 ![TABLES CREATED AT PRIMARY DATABASE IS REPLICAED](https://user-images.githubusercontent.com/13011167/84264038-237df200-ab3e-11ea-9c7e-9a776948e49a.png)
+
 ![DATABASE|REPLICA – Not able to write only able to read.](https://user-images.githubusercontent.com/13011167/84264072-3264a480-ab3e-11ea-9a5c-40f9ba9314b2.png)
 **SAVE** screenshot of the database configuration now, before promoting the read replica database in the next step. Name your screenshot: rr_before_promotion.png
+
 ![SCREENSHOT OF THE CONFIGRATION BEFORE PROMOTING THE REPLICA](https://user-images.githubusercontent.com/13011167/84264552-01d13a80-ab3f-11ea-9e09-956840ab33c8.png)
 6. Promote the read replica
 7. Verify that if you are able to insert data into and read from the read replica database.
@@ -155,6 +158,7 @@ In the standby region:
 ![ABLE TO WRITE ROWS TO THE TABLES IN DATABASE AFTER PROMOTING](https://user-images.githubusercontent.com/13011167/84265724-e7985c00-ab40-11ea-8fb0-66dd042ba7c5.png)
 
 **SAVE** screenshots of the database configuration after the database promotion. Name your screenshot: rr_after_promotion.png
+
 ![rr_after_promotion](screenshots/rr_after_promotion.png "rr_after_promotion")
 
 ### Part 3
