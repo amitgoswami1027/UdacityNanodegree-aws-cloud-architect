@@ -14,6 +14,7 @@ customers.
 ### OUTLINE
 ![image](https://user-images.githubusercontent.com/13011167/84280300-be81c680-ab54-11ea-9fec-8f87cca533aa.png)
 
+
 ### 1. AZs AND REGIONS - HA Design
 * AWS has around 22 Regions and 2-3 AZs in each Region.
 * Highly available design is critical. Building for failover must be considered at every level of a system. Allowing for any 
@@ -179,6 +180,9 @@ native in order to achieve truly optimized performance. Common causes of perform
   * Inefficient network routes
 * Moving to the cloud should improve network response times. Global edge cache locations can bring the server closer to the end user.
 
+## OUTLINE
+![image](https://user-images.githubusercontent.com/13011167/84308697-90b07800-ab7c-11ea-96fd-02f5f0308723.png)
+
 #### Examples Of Cloud Migration Goals:
 * We are migrating to the cloud to reduce our infrastructure costs by 25%
 * We believe that by hosting our application in AWS, we will be able to deliver download speeds that are 60% faster than our 
@@ -267,7 +271,15 @@ My Solution: Your solution might be different, but here is what I came up with:
 necessary
 * Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
 
+## PERFORMANCE IN CLOUD
+* Moving your applications to the cloud doesn’t guarantee that your performance issues will automatically be resolved, 
+  especially if you lift and shift.
 
+#### Infrastructure Performance in the Cloud
+
+![image](https://user-images.githubusercontent.com/13011167/84309264-7aef8280-ab7d-11ea-917f-18ac3fbec396.png)
+
+![image](https://user-images.githubusercontent.com/13011167/84309456-c4d86880-ab7d-11ea-80e7-e69228b78711.png)
 
 ### IMPORTANT LINKS FOR READING
 * CLOUD MIGRATION : https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
