@@ -1,4 +1,4 @@
-## AWS CLOUD ARCHITECT - NanoDegree
+## AWS CLOUD ARCHITECT - NanoDegree (MyNotes)
 
 ## Design For Availability,Reliability and Resiliency
 * Availability: A measure of time that a system is operating as expected. Typically measured as a percentage.
