@@ -1,6 +1,6 @@
-## AWS CLOUD ARCHITECT - NanoDegree - Project01
-
-# Data durability and recovery
+## AWS CLOUD ARCHITECT - NanoDegree 
+## Project01
+## Data durability and recovery
 In this project you will create highly available solutions to common use cases.  You will build a Multi-AvailabilityZone, Multi-Region database and show how to use it in multiple geographically separate AWS regions.  You will also build a website hosting solution that is versioned so that any data destruction and accidents can be quickly and easily undone.
 
 ## Getting Started
@@ -14,29 +14,7 @@ CloudFormation allows you to use a configuration file written in a YAML file to 
 
 You can find the YAML file in the GitHub repo: https://github.com/udacity/nd063-c2-design-for-availability-resilience-reliability-replacement-project-starter-template/blob/master/cloudformation/vpc.yaml
 
-In order to build a VPC from the YAML file, follow the steps:
-1. Services -> CloudFormation
-2. Create stack “With new resources (standard)”
-  ![Create VPC](screenshots/cloudformationCreate.png "Create VPC")
-3. Template is ready
-4. Upload a template file
-5. Click “Choose file” button
-6. Select provided YAML file
-7. Next
-8. Fill in Stack name
-9. Name the VPC
-10. Update the CIDR blocks
-11. Click Next
-12. Click Next again
-13. Click Create stack
-14. Wait for the stack to build out.  Refresh until status becomes “CREATE_COMPLETE”
-15. Observe the “Outputs” tab for the created IDs.  These will be used later.
-
-Once the CloudFormation Stack has completed, you can look at the "Resources" tab to see all of the AWS resources that the stack has created.  You can see both the type of resources that have been created, as well as the AWS identifiers for those resources so that you can locate these resources in the AWS service that they are a part of.
-
-The "Outputs" tab shows you custom output from the CloudFormation Stack that is labeled and described for you.  These descriptions are custom descriptions that were added to the CloudFormation template and make it easier for you to find specific values that have been created as a part of the CloudFormation stack.  Here, you can find the VPC ID that has been created, the subnet IDs including which subnets are public and which are private, and the Security Groups that have been created and a description of each.
-
-### Part 1
+## Part=01
 Complete the following steps:
 ### Data durability and recovery
 In order to achieve the highest levels of durability and availability in AWS you must take advantage of multiple AWS regions. 
@@ -47,8 +25,8 @@ In order to achieve the highest levels of durability and availability in AWS you
 
 **NOTE**: Be sure to use different CIDR address ranges for the VPCs.
 **SAVE** screenshots of both VPCs after they are created. Name your screenshots: primary_Vpc.png, secondary_Vpc.png
-![Create VPC](screenshots/Primary_VPC.png "Primary VPC")
-![Create VPC](screenshots/Secondary_VPC.png "Secondary VPC")
+![Create Primary VPC : us-east-1](screenshots/primary_Vpc.png "Primary VPC")
+![Create Secondary VPC : us-west-1](screenshots/secondary_Vpc.png "Secondary VPC")
 
 ### Highly durable RDS Database
 1. Create a new RDS Subnet group in the active(us-east-1) and standby(us-west-1) region. -Done
@@ -63,7 +41,15 @@ In order to achieve the highest levels of durability and availability in AWS you
    active region. 
 
 **SAVE** screenshots of the configuration of the databases in the active and secondary region after they are created. 
+![Primary DB Config](screenshots/primaryDB_config.png "Primary DB Config")
+![Secondary DB Config](screenshots/secondaryDB_config.png "Secondary DB Config")
 **SAVE** screenshots of the configuration of the database subnet groups as well as route tables associated with those subnets. Name the screenshots: primaryDB_config.png, secondaryDB_config.png, primaryDB_subnetgroup.png, secondaryDB_subnetgroup.png, primaryVPC_subnets.png, secondaryVPC_subnets.png, primary_subnet_routing.png, secondary_subnet_routing.png
+![PrimaryDB Subnet](screenshots/primaryDB_subnetgroup.png "Primary DB Subnet Config")
+![SecondaryDB Subnet](screenshots/secondaryDB_subnetgroup.png "Secondary DB Subnet Config")
+![Primary VPC Subnet](screenshots/primaryVPC_subnets.png "Primary VPC Subnet")
+![Secondary VPC Subnet](screenshots/secondaryVPC_subnets.png "Secondary VPC Subnet")
+![Primary subnet routing](screenshots/primary_subnet_routing.png "Primary subnet routing")
+![Secondary subnet routing](screenshots/secondary_subnet_routing.png "Secondary subnet routing")
 
 ### Estimate availability of this configuration
 Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
@@ -72,6 +58,29 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
 2. Minimum RTO for a single region outage
 3. Minimum RPO for a single AZ outage
 4. Minimum RPO for a single region outage
+
+Multi-Site
+Multi-Site is an active-active configuration DR approach, where in an identical solution runs on AWS as your on-site infrastructure.
+Traffic can be equally distributed to both the infrastructure as needed by using DNS service weighted routing approach.
+In case of a disaster the DNS can be tuned to send all the traffic to the AWS environment and the AWS infrastructure scaled accordingly.
+Preparation phase steps :
+* Set up your AWS environment to duplicate the production environment.
+* Set up DNS weighting, or similar traffic routing technology, to distribute incoming requests to both sites.
+* Configure automated failover to re-route traffic away from the affected site. for e.g. application to check if primary DB is available 
+  if not then redirect to the AWS DB
+Somewhat this depends on your definition of RPO. Under most definitions of RPO it is the interval between backups and is measured in hours. It only applies to situations in which your live data is completely lost and you need to recover using a copy not maintained in real-time. Because the database also backs up the log file, RPO can be brought down to minutes (vs other kinds of data volumes). But the preferred mechanism is to use multiple synchronously maintained copies so that your RPO under all but the most extreme circumstances is 0.
+
+If an RDS database instance's volumes were to be lost (logical or physical corruption), requiring recreating it from backup, then the RPO for Single-AZ, Multi-AZ, and even Aurora is typically around 5 minutes. That is the target interval for RDS to perform log backups to S3, so on a database volume loss you could have 5 minutes of log data that is also lost. There is no way to change the log backup interval, though that might be an interesting feature to add (hint: they would almost certainly have to charge for this as it would take a significant increase in resources behind the scenes to accomplish this at scale).
+
+With Single-AZ the only live copy of your data is the EBS volume that holds the data for the instance. While EBS uses mirroring of data under the covers to provide durability and availability, there are several scenarios where you would have no choice other than to recover from backups. In this case you might want to apply the 5 minute log backup interval as your RPO.
+
+With Multi-AZ the odds of data loss go way down because you have a separate synchronous copy of the volume being maintained in a separate data center (AZ). If your primary instance fails, you failover to the secondary instance with no data loss. There are far fewer scenarios where recreating the database from backup would be required, but there are still a few. Since volume-level replication is used, a corruption on the primary's volume may be replicated to the secondary's volume. And as rare as this scenario is, it would necessitate recovery from backups. I believe most customers think of Multi-AZ as having an RTO of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. Again putting this into more traditional terms, even if a natural disaster were to destroy the data center housing the primary, the secondary would take over with no data loss. So assuming an RPO of 0 makes sense.
+
+With Aurora the odds of data loss take another significant drop as it maintains 6 copies spread over 3 AZs, and it does that at a granularity of 10GB. So if something does become corrupt then it is a 10GB chunk of which there are 5 other copies plus backup information on S3, making it easy to transparently recover that one copy of the 10GB segment. There are almost no scenarios in which you would need to recreate the entire instance from backup. So truly an RPO of 0.
+
+Bottom line is that I think for availability purposes RDS offers an RPO of 0 minutes. The next step would be to decide if you have a separate RPO for disaster recovery purposes, and what your disaster recovery plan looks like. Maybe it is just backups, or cross-region snapshot copies, or cross-region read replicas. None of these can achieve an RPO of 1 minute BTW, but DR strategies rarely require that.
+
+https://blogs.cornell.edu/cloudification/category/devops/
 
 **SAVE** your answers in a text file named "estimates.txt"
 
@@ -83,8 +92,9 @@ In the active region(us-east-1):
    * Connect to the EC2 instance using putty.
    * aws configure, to configure the aws cli credentials.
    * sudo yum updates
-   * Install mysql client
+   * Install mysql client / yum install mysql
    * mysql -u udacity1 -p -h udacity1.cvqgygxhhehg.us-east-1.rds.amazonaws.com
+   * mysql -u udacity1 -p -h udacity1.cfcesfue6o5g.us-west-1.rds.amazonaws.com
    * Other Commands
      ```
      wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
@@ -111,28 +121,41 @@ https://dev.mysql.com/doc/refman/5.7/en/getting-information.html
 2. Observe the “Replication” configuration with your multi-region read replica. 
 
 **SAVE** screenshots of the DB Connections and the database replication configuration. Name your screenshots: monitoring_connections.png, monitoring_replication.png
+![monitoring_Connections](screenshots/monitoring_connections.png "monitoring_connections")
+![monitoring_replication](screenshots/monitoring_replication.png "monitoring_replication")
 
-### Part 2
+## Part 2
 ### Failover And Recovery
 In the standby region:
-
 1. Create an EC2 keypair in the region
 2. Launch an Amazon Linux EC2 instance in the standby region. Configure the instance to use the VPC's public subnet and security group ("UDARR-Application").
 3. SSH to the instance and connect to the read replica database.
+   * Connect to the EC2 instance using putty.
+   * aws configure, to configure the aws cli credentials.
+   * sudo yum updates
+   * Install mysql client / yum install mysql
+   * mysql -u udacity1 -p -h udacity1.cfcesfue6o5g.us-west-1.rds.amazonaws.com
 4. Verify if you are not able to insert data into the database but are able to read from the database.
+   * INSERT INTO pet VALUES ('Puffball5','Aryan','germanshperd','f','1999-03-30',NULL);
 5. You have now demonstrated that you can only read from the read replica database.
 
 **SAVE** log of connecting to the database, writing to and reading from the table in a text file called "log_rr_before_promotion.txt"
-
+![CONNECTING TO THE REPLICA OF DB](https://user-images.githubusercontent.com/13011167/84263956-0812e700-ab3e-11ea-9a14-ea5190366fdf.png)
+![TABLES CREATED AT PRIMARY DATABASE IS REPLICAED](https://user-images.githubusercontent.com/13011167/84264038-237df200-ab3e-11ea-9c7e-9a776948e49a.png)
+![DATABASE|REPLICA – Not able to write only able to read.](https://user-images.githubusercontent.com/13011167/84264072-3264a480-ab3e-11ea-9a5c-40f9ba9314b2.png)
 **SAVE** screenshot of the database configuration now, before promoting the read replica database in the next step. Name your screenshot: rr_before_promotion.png
-
+![SCREENSHOT OF THE CONFIGRATION BEFORE PROMOTING THE REPLICA](https://user-images.githubusercontent.com/13011167/84264552-01d13a80-ab3f-11ea-9e09-956840ab33c8.png)
 6. Promote the read replica
 7. Verify that if you are able to insert data into and read from the read replica database.
 8. You have now demonstrated that you can read and write the promoted database in the standby region.
 
 **SAVE** log of connecting to the database, writing to and reading from the database in a text file named "log_rr_after_promotion.txt"
+![RECONNECTING AFTER PROMOTING](https://user-images.githubusercontent.com/13011167/84265362-5cb76180-ab40-11ea-9321-79d98b240470.png)
+![ABLE TO READ FROM DB](https://user-images.githubusercontent.com/13011167/84265541-9f793980-ab40-11ea-94d5-fadc99c31b94.png)
+![ABLE TO WRITE ROWS TO THE TABLES IN DATABASE AFTER PROMOTING](https://user-images.githubusercontent.com/13011167/84265724-e7985c00-ab40-11ea-8fb0-66dd042ba7c5.png)
 
 **SAVE** screenshots of the database configuration after the database promotion. Name your screenshot: rr_after_promotion.png
+![rr_after_promotion](screenshots/rr_after_promotion.png "rr_after_promotion")
 
 ### Part 3
 ### Website Resiliency
