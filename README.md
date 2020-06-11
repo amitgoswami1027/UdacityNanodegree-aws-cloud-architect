@@ -172,9 +172,9 @@ cloudwatch-metrics.html
 ## DESIGN FOR PEROFRMANCE AND SCALIBILITY
 #### Key Points
 * Moving to the cloud doesn’t guarantee that your application will be faster and cost less to operate. In fact, without the 
-proper baseline metrics, you won’t know where to start when planning your move.
+  proper baseline metrics, you won’t know where to start when planning your move.
 * Most performance issues can be traced to the application itself and some applications will need to be redesigned to be cloud 
-native in order to achieve truly optimized performance. Common causes of performance issues:
+  native in order to achieve truly optimized performance. Common causes of performance issues:
   * Poorly designed applications
   * Database design constraints
   * Inefficient network routes
@@ -186,7 +186,7 @@ native in order to achieve truly optimized performance. Common causes of perform
 #### Examples Of Cloud Migration Goals:
 * We are migrating to the cloud to reduce our infrastructure costs by 25%
 * We believe that by hosting our application in AWS, we will be able to deliver download speeds that are 60% faster than our 
-baseline
+baseline.
 * We are going to duplicate our infrastructure in the cloud and maintain our AWS account as a warm backup site for disaster 
 recovery
 * We are consolidating our data centers and moving to the cloud because our AWS account will provide one centralized view into 
@@ -231,6 +231,13 @@ Remember, you only pay for services you use, and once you stop using them, AWS s
 
 There is no cost for uploading data into the AWS cloud, although you will pay for storage and data transfer back out. Because of the massive scale of the AWS technology platform, there is no limit to how much data you can upload. 
 
+![image](https://user-images.githubusercontent.com/13011167/84426533-03832700-ac41-11ea-8c66-016f21a91c33.png)
+
+### Tips for Reducing Costs
+* Use AWS CloudFront to cache data close to end users
+* Avoid inter-region data transfer costs
+* Peering via AWS Transit Gateway for VPCs reduces costs
+
 ### INSTANCE PRICING
 AWS EC2 instance pricing is straightforward, but it can quickly become complex when you take up the task of optimizing your environment to achieve the ideal cost/performance balance.
 * Explore OS licensing pricing and options
@@ -271,15 +278,63 @@ My Solution: Your solution might be different, but here is what I came up with:
 necessary
 * Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
 
+![image](https://user-images.githubusercontent.com/13011167/84431191-82c82900-ac48-11ea-914a-18cfe877d3f9.png)
 ## PERFORMANCE IN CLOUD
 * Moving your applications to the cloud doesn’t guarantee that your performance issues will automatically be resolved, 
   especially if you lift and shift.
-
+  
 #### Infrastructure Performance in the Cloud
 
 ![image](https://user-images.githubusercontent.com/13011167/84309264-7aef8280-ab7d-11ea-917f-18ac3fbec396.png)
 
+* Burstable Performance Instance: T3, T3a, and T2 instances, are designed to provide a baseline level of CPU performance with the ability to burst to a higher level when required by your workload.AWS burstable instances are T2 and T3 instance types
+* Optimized Instances: Instance types optimized to fit different use cases. Instance types comprise varying combinations of CPU, memory, storage, GPU, and networking capacity and give you the flexibility to choose the appropriate mix of resources for your applications.
+
 ![image](https://user-images.githubusercontent.com/13011167/84309456-c4d86880-ab7d-11ea-80e7-e69228b78711.png)
+
+#### Scaling and performance 
+![image](https://user-images.githubusercontent.com/13011167/84432156-0e8e8500-ac4a-11ea-9b05-2d5e770d52ce.png)
+
+* Accelerated Computing Instance Families: Use hardware accelerators, or co-processors, to perform some functions, such as floating point number calculations, graphics processing, or data pattern matching, more efficiently than is possible in software running on CPUs.
+* F1, P2, P3 , G3 and G4 instances provide extremely accelerated computing instances for supercoming resources like scientific image moduling. G4 instances well-suited for machine learning inference, video transcoding, and graphics applications like remote graphics workstations and game streaming in the cloud
+* C4 and C5 are compute optimized instances like high preformance computing and scentific modeling.
+* t2 and T3 are bustable instances that are unique in there ability on there baseline CPU resources. Tracking CPU credits when the instances running below capacity.
+* R4 qand R5 are memory optimized instances, like high perofrmance Databases.
+* D2 instances are memory optimized instances.
+* Inf1, optimized for the machine learning models.
+* AWS optimized instances can provide higher throughput for intensive workloads.
+
+### Sotrage and servicves
+![image](https://user-images.githubusercontent.com/13011167/84433742-6af2a400-ac4c-11ea-88a0-4ef9e3234a22.png)
+
+#### EBS & EFS
+Amazon EBS or Elastic Block Storage is provisioned capacity and performance
+* Pay for the EBS storage even if it is unattached or has very low read/write activity.One of the - Need to audit your 
+environment to detect and delete obsolete EBS volumes and adjust the size of your provisioned storage to match your actual 
+use.
+* EBS volumes attached to EBS optimized instances can be accessed using dedicated networks for better throughput
+* Non-EBS optimized instances share the network with all the rest of the local traffic
+
+Amazon EFS or Elastic File Storage has optimization built into the service
+* Distributed to make it highly available, durable, and scalable.
+* Can be mounted on up to thousands of Amazon EC2 instances concurrently
+* Supports encryption in transit and encryption at rest with a minimal effect on I/O latency and throughput
+* Amazon Elastic File System is a scalable NFS file system that grows and shrinks elastically as you add and remove files. 
+There is no need to provision EFS storage, and you only pay for what you use.
+* AWS EFS files can be automatically moved to a lower infrequently accessed tier (EFS-IA) after they haven’t been accessed for 
+a certain period of time.
+* EFS supports any number of concurrent EC2 instance connections. Thousands of connections is not uncommon.
+
+#### EBS - ELASTIC BLOCK STORAGE
+* EBS volumes are highly durable block storage hard drives that can either be created independently on the EBS management page or created with a new EC2 instance
+* EBS volumes can be attached to and detached from instances and can be used just like any other hard drive- you can run databases, create file systems, and move them between instances
+* EBS volumes are provisioned storage, so costs are incurred whether it is attached to an EC2 instance or not. Be mindful of idle EBS volumes and make sure they are necessary before you maintain unused volumes for long periods of time.
+* EBS snapshots are point-in-time backups of EBS volumes saved to S3 and serve as a lower cost alternative to maintaining idle EBS volumes
+* AWS EBS provides SSD or HDD volumes. SSD are for low latency/high performance applications like databases and HDD are for high throughput applications like big data workloads and infrequently accessed files in cold storage.
+* Costs with EBS HDD are considerably lower than EBS SSD
+
+![image](https://user-images.githubusercontent.com/13011167/84434646-118b7480-ac4e-11ea-99d8-1ddb505b1673.png)
+
 
 ### IMPORTANT LINKS FOR READING
 * CLOUD MIGRATION : https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
@@ -290,3 +345,12 @@ necessary
 * AWS REDDITT: https://www.reddit.com/r/aws/
 * AWS OUTPOST: https://aws.amazon.com/outposts/
 * AWS SNOWBALL: https://aws.amazon.com/snowball/
+* AWS OUTPOST: https://www.zdnet.com/article/aws-outpost-brings-its-cloud-hardware-on-premises/
+* CLOUD MIGRATION: https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
+* CLOUD MIGRATION2: https://aws.amazon.com/cloud-migration/
+* CLOUD PRICING: https://cloud.withgoogle.com/build/infrastructure/public-cloud-pricing-explained/
+* VPC PREEING : https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+* REDUCE COST ON AWS: https://cloudonaut.io/6-new-ways-to-reduce-your-AWS-bill-with-little-effort/
+* SAVE MONEY WITH VPC ENDPOINT: https://medium.com/nubego/how-to-save-money-with-aws-vpc-endpoints-9bac8ae1319c
+* HOW TO HAVE AWS BUDGET UNDER CONTROL:  https://jatheon.com/blog/aws-reduce-costs/
+* TYPE OF INSTANCES: https://aws.amazon.com/ec2/instance-types/
