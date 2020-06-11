@@ -25,18 +25,13 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
 3. Minimum RPO for a single AZ outage
 4. Minimum RPO for a single region outage
 [My Thoughts on the same]
-* If an RDS database instance's volumes are lost, requiring recreating it from backup, then the RPO for Single-AZ, Multi-AZ, and even 
-  is typically around 5 minutes. That is the target interval for RDS to perform log backups to S3, so on a database volume loss you 
-  could have 5 minutes of log data that is also lost. There is no way to change the log backup interval.
-* With Single-AZ the only live copy of your data is the EBS volume that holds the data for the instance. While EBS uses mirroring of 
-  data under the covers to provide durability and availability, there are several scenarios where you would have no choice other than to 
-  recover from backups. In this case you might want to apply the 5 minute log backup interval as your RPO.
-* With Multi-AZ the odds of data loss go way down because we have a separate synchronous copy of the volume being maintained in a 
-  separate data center (AZ). If the primary instance fails, we failover to the secondary instance with no data loss.Since volume-level 
-  replication is used, a corruption on the primary's volume may be replicated to the secondary's volume. I believe most customers think 
-  of Multi-AZ as having an RTO of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. Again putting this into 
-  more traditional terms, even if a natural disaster were to destroy the data center housing the primary, the secondary would take over 
-  with no data loss. So assuming an RPO of 0 makes sense.
+* If an RDS database instance's volumes are lost, requiring recreating it from backup, then the RPO for Single-AZ, Multi-AZ, and even is typically around 5 minutes. That is the target interval for RDS to perform log backups to S3, so on a database volume loss you could have 5 minutes of log data that is also lost. There is no way to change the log backup interval.
+* With Single-AZ the only live copy of your data is the EBS volume that holds the data for the instance. While EBS uses mirroring of data under the covers to provide durability and availability, there are several scenarios where you would have no choice other than to recover from backups. In this case you might want to apply the 5 minute log backup interval as your RPO.
+* With Multi-AZ the odds of data loss go way down because we have a separate synchronous copy of the volume being maintained in a separate data center (AZ). If the primary instance fails, we failover to the secondary instance with no data loss.Since volume-level replication is used, a corruption on the primary's volume may be replicated to the secondary's volume. I believe most customers think of Multi-AZ as having an RTO of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. Again putting this into more traditional terms, even if a natural disaster were to destroy the data center housing the primary, the secondary would take over with no data loss. So assuming an RPO of 0 makes sense.
+* Single AZ outage in multi-AZ deployment: There exists synchronous replication in case of multi AZ deployments. Whenever one AZ fails, automatic failover takes place. RTO and RPO are very less in this case.
+Refer this link to understand more about multi-AZ deployments: https://aws.amazon.com/rds/features/multi-az/
+* Single region outage in multi-region deployment: If one region fails, we have to promote the read replica to take place of master database. This requires manual intervention. Also, there exists asynchronous replication in this case. Thus, RTO and RPO are slightly greater in this case.
+Refer this link to understand more about RTO and RPO for RDS: https://aws.amazon.com/blogs/database/implementing-a-disaster-recovery-strategy-with-amazon-rds/
 
 #### Review-04: Screenshot of “Database connections” metric of database. Screenshot showing database replica configuration.
 * [Comment]: monitoring_replication.png should show the replication status as 'Replicating'
