@@ -43,8 +43,7 @@ Write a paragraph or two describing the achievable Recovery Time Objective (RTO)
   ![image](https://user-images.githubusercontent.com/13011167/84292707-5804a480-ab64-11ea-8f8d-9e6e600a66f2.png)
 #### Review-05: Screenshot of the read-replica database before promotion.,Another screenshot after promotion. Log of the student connecting to, reading from, and writing to the database in the standby region, after promotion.
 * [Comment] : Can you please provide screenshot for the database before and after the promotion. I only see rr_after_promotion.png.
-* screenshots/log_rr_before_promotion.doc & screenshots/log_rr_after_promotion.doc have the details related to the before and after 
- promotion.
+* screenshots/log_rr_before_promotion.png & screenshots/log_rr_after_promotion.png files. Kindly refer. 
 
 # Project01
 # Data Durability and Recovery
