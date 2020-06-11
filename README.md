@@ -1,4 +1,4 @@
-## AWS CLOUD ARCHITECT - NanoDegree
+## AWS CLOUD ARCHITECT - NanoDegree (MyNotes)
 
 ## Design For Availability,Reliability and Resiliency
 * Availability: A measure of time that a system is operating as expected. Typically measured as a percentage.
@@ -6,8 +6,17 @@
   how often something fails.
 * Resiliency: A measure of a system's recoverability. How quickly and easily a system can be brought back online.
 
-### AZs AND REGIONS - HA Design
-* AWS has around 20 Regions and 2-3 AZs in each Region.
+#### BUSINESS STAKEHOLDERS: Most software platforms have Service Level Agreements (SLAs) that are critical to business stakeholders. All 
+business functions tend to be concerned with a companies SLAs as they have wide-spread impact. The business both expects its vendors to 
+meet their SLAs, and it is vital for a company to achieve its published SLAs in order to meet contractual obligations and support its 
+customers.
+
+### OUTLINE
+![image](https://user-images.githubusercontent.com/13011167/84280300-be81c680-ab54-11ea-9fec-8f87cca533aa.png)
+
+
+### 1. AZs AND REGIONS - HA Design
+* AWS has around 22 Regions and 2-3 AZs in each Region.
 * Highly available design is critical. Building for failover must be considered at every level of a system. Allowing for any 
 individual component to fail and having a standby system able to take over is no small task, but HA design allows for platform 
 systems to remain available regardless of any given server failing. 
@@ -26,7 +35,7 @@ systems to remain available regardless of any given server failing.
 * Cross region connections
 * Cross account connections
 
-### BUILDING RESILENCY
+### 2. BUILDING RESILENCY
 * INTUTION : You can build a system that is singular with no failover options, and you can build systems that are Multi-AZ, 
 Multi-Region with automated lightning fast failover. It is up to you to first determine what level of redundancy is 
 appropriate and then figure out how to build that system.When approaching a new product or service, you should consider how 
@@ -65,7 +74,7 @@ you to modify a table in multiple regions and have those changes reflected in al
 S3 Versioned Buckets keep all versions of an S3 object as you make changes to the object. You can even use this functionality 
 to recover deleted objects.
 
-### BUSINESS OBJECTIVES: Business objectives are where the other business functions of your company meet with the Engineering 
+### 3. BUSINESS OBJECTIVES: Business objectives are where the other business functions of your company meet with the Engineering 
 function. These other areas of the company focus on signing customers, managing finances, supporting customers, advertising 
 your products, etc. Where all of these teams meet is in the realm of contracts, commitments and uptime. This is where other 
 parts of a business have to collaborate with Engineering in order to come up with common goals and common language.
@@ -141,7 +150,7 @@ service and has the ability to serve files from an S3 bucket. It also can be con
 bucket in case the primary is not available.
 * Create two S3 buckets in two different regions and then create a CloudFront distribution and create an Origin Group with both buckets and use that as the origin for the CloudFront distribution.
 
-#### MONITORING 
+#### 4. MONITORING 
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-
 cloudwatch-metrics.html
 
@@ -170,6 +179,9 @@ native in order to achieve truly optimized performance. Common causes of perform
   * Database design constraints
   * Inefficient network routes
 * Moving to the cloud should improve network response times. Global edge cache locations can bring the server closer to the end user.
+
+## OUTLINE
+![image](https://user-images.githubusercontent.com/13011167/84308697-90b07800-ab7c-11ea-96fd-02f5f0308723.png)
 
 #### Examples Of Cloud Migration Goals:
 * We are migrating to the cloud to reduce our infrastructure costs by 25%
@@ -259,7 +271,15 @@ My Solution: Your solution might be different, but here is what I came up with:
 necessary
 * Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
 
+## PERFORMANCE IN CLOUD
+* Moving your applications to the cloud doesn’t guarantee that your performance issues will automatically be resolved, 
+  especially if you lift and shift.
 
+#### Infrastructure Performance in the Cloud
+
+![image](https://user-images.githubusercontent.com/13011167/84309264-7aef8280-ab7d-11ea-917f-18ac3fbec396.png)
+
+![image](https://user-images.githubusercontent.com/13011167/84309456-c4d86880-ab7d-11ea-80e7-e69228b78711.png)
 
 ### IMPORTANT LINKS FOR READING
 * CLOUD MIGRATION : https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
