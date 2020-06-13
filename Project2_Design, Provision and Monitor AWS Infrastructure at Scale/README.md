@@ -36,24 +36,31 @@
 * STEP-06: In order to maintain your tfstate file properly, you MUST have versioning enabled on your S3 bucket. When the state file is 
   stored remotely in S3, it can be versioned and shared collaboratively
 
-## Task 1: Create AWS Architecture Schematics
+## Task 1: Create AWS Architecture Schematics - [Done]
 ### Part 1 : You have been asked to plan and provision a cost-effective AWS infrastructure for a new social media application 
 development project for 50,000 single-region users. The project requires the following AWS infrastructure and services. Please include 
 your name and label all elements of the infrastructure on the diagram.
-* Infrastructure in the following regions: us-east-1
+* Infrastructure in the following regions: us-east-1(AmitG)
 * Users and Client machines
-* One VPC
-* Two Availability Zones
-* Four Subnets (2 Public, 2 Private)
-* A NAT Gateway
+* One VPC (10.1.0.0/16) - AmitG
+* Two Availability Zones - us-east-1a and us-east-1b
+* Four Subnets (2 Public, 2 Private) - 10.1.10.0/24; 10.1.11.0/24;10.1.20.0/24;10.1.21.0/24
+* A NAT Gateway 
 * A CloudFront distribution with an S3 bucket
-* Web servers in the Public Subnets sized according to your usage estimates
-* Application Servers in the Private Subnets sized according to your usage estimates
-* DB Servers in the Private Subnets
+* Web servers in the Public Subnets sized according to your usage estimates - T4 (Web Servers) 
+* Application Servers in the Private Subnets sized according to your usage estimates T4 ( Application Server)
+* DB Servers in the Private Subnets (RDS Master and RDS Replica)
 * Web Servers Load Balanced and Autoscaled
 * Application Servers Load Balanced and Autoscaled
 * A Master DB in AZ1 with a read replica in AZ2
 Use LucidChart or a similar diagramming application to create your schematic. Export your schematic as a PDF and save as Udacity_Diagram_1.pdf.
+### SOLUTION : Taking the architecture forward from the Project-01:Data DUrability and Recovery, here goes the details of the initial. 
+AWS Architecutre for the above problem statement.To be cost effective I will be using the Multi-AZ architecutre as Multi region will 
+be costly and believe for 50k users it does not make sense to go from multi-region architecture option.
+* In order to achieve the durability and availability in AWS you must go for multi AZ Architecutre, us-east-1a and us-east-1b. 
+* Primary VPC (us-east-1) - 10.1.0.0/16 with Subnets : 10.1.10.0/24; 10.1.11.0/24;10.1.20.0/24;10.1.21.0/24
+#### Added the find in repo - Udacity_Diagram_1.pdf. Following snapshot for your reference. (All resources are tagged with AmitG)
+![image](https://user-images.githubusercontent.com/13011167/84575602-dd3dc280-adcb-11ea-95e9-45e06ef7fa0e.png)
 
 ### Part-02: You have been asked to plan a SERVERLESS architecture schematic for a new application development project. The project 
 requires the following AWS infrastructure and services.
@@ -66,8 +73,10 @@ requires the following AWS infrastructure and services.
 * DynamoDB
 * S3 Storage
 Export your schematic as a PDF and save as Udacity_Diagram_2.pdf
+#### SOLUTION : Added the find in repo - Udacity_Diagram_2.pdf. Following snapshot for your reference.(All resources are tagged with AmitG)
+![image](https://user-images.githubusercontent.com/13011167/84576081-9f429d80-adcf-11ea-93b4-3ec1b2ffedab.png)
 
-## Task 2: Calculate Infrastructure Costs
+## Task 2: Calculate Infrastructure Costs-[Done]
 * PART-01: Use the AWS Pricing Calculator to estimate how much it will cost to run the services in your Part 1 diagram for one month.
   * Target a monthly estimate between $8,000-$10,000.
   * Be mindful of AWS regions when you are estimating costs.
@@ -80,6 +89,46 @@ Export your schematic as a PDF and save as Udacity_Diagram_2.pdf
     Think about where to add redundancy and how to improve performance. Re-configure your estimate to a monthly invoice of $18K-20K. 
     Export the updated costs to a CSV file named Increased_Cost Estimate.csv and write up a brief narrative of the changes you made in 
     the CSV file below the cost estimate.
+### SOLUTION : (initial_cost_estimate.csv;reduced_cost_estimate.csv and increased_cost_estimate.csv enclosed for reference)
+### Links for cost computaitons:
+* [Initial Cost]: https://calculator.aws/#/estimate?id=b909c3b2e8839a9108abb974f40bec561af0ab66
+* [Reduced Cost]: https://calculator.aws/#/estimate?id=72b87c780f7e9c11ecf9da3835d46415c9ef4ecf
+* [Enhanced Cost]: https://calculator.aws/#/estimate?id=410248567d79f29af9c89e0b99c77a9182f35207
+### Reduced costs changes- Modifications
+* Use of smaller EC2 and RDS instances
+* We can also make use of the reserved instances booked for 1-3 year duraiton to reduce cost.  * Using reserved instances will   
+  significantly reduce costs but will lock the platform into using the selected infrastructure for the next year. 
+* Using smaller EC2 instances allows for more granular autoscaling though could reduce performance.
+### Increased costs changes- Modifications
+* Larger RDS instances and increased EC2 instances for scaling and performance. 
+* We can also make use of another AZ in Us-east-1, probably use-east-1c.
+* We can also make use of the multi region configrations to enhance the durability abd availability for disastory management - Second 
+  region allows for failover if the first region goes down. 
+
+## Task 3: Configure Permissions. [Done]
+In order to complete this task, please ensure your IAM users have been granted access to the billing dashboard (Activating Access to the Billing and Cost Management Console).
+* 1. Update the AWS password policy.
+     * Minimum password length = 8
+     * Require at least one uppercase letter
+     * Require at least one lowercase letter
+     * Require at least one number
+     * Require at least one non-alphanumeric character.
+Submit a screenshot of the Password Policy from the IAM Account settings page. Name the screenshot udacity_password_policy.png or udacity_password_policy.jpg.
+![image](https://user-images.githubusercontent.com/13011167/84579265-0ff6b380-adea-11ea-80be-2380ea1876fc.png)
+* 2. Create a Group named CloudTrailAdmins and give it the two CloudTrail privileges.
+* 3. Create a Group named Reviewers and give it the Billing privilege.
+* 4. Configure a user named CloudTrail and a user named Accountant. Give the users AWS Console access and assign them a password that 
+     conforms to your password policy. Require them to change their password when they login.
+* 5. Assign CloudTrail to the CloudTrailAdmins group. Assign Accountant to the Reviewers group .
+* 6. Test both user accounts by logging into the AWS console as the users CloudTrail and Accountant after changing their passwords on 
+     login. Login using your numerical AccountID
+
+
+
+
+
+
+
 
 ## DESIGN FOR PEROFRMANCE AND SCALIBILITY
 #### Key Points
