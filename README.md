@@ -10,11 +10,8 @@
 business functions tend to be concerned with a companies SLAs as they have wide-spread impact. The business both expects its vendors to 
 meet their SLAs, and it is vital for a company to achieve its published SLAs in order to meet contractual obligations and support its 
 customers.
-
 ### OUTLINE
 ![image](https://user-images.githubusercontent.com/13011167/84280300-be81c680-ab54-11ea-9fec-8f87cca533aa.png)
-
-
 ### 1. AZs AND REGIONS - HA Design
 * AWS has around 22 Regions and 2-3 AZs in each Region.
 * Highly available design is critical. Building for failover must be considered at every level of a system. Allowing for any 
@@ -154,21 +151,6 @@ bucket in case the primary is not available.
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-
 cloudwatch-metrics.html
 
-### IMPORTANT LINKS FOR READING
-* Global Infrastructure : https://aws.amazon.com/about-aws/global-infrastructure/
-* Case Studies: https://aws.amazon.com/solutions/case-studies/?customer-references-cards.sort-by=item.additionalFields.publishedDate&customer-references-cards.sort-order=desc
-* AWS Realiability Pillar : https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf
-* CIDR : https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
-* NAT: https://en.wikipedia.org/wiki/Network_address_translation
-* WannaCry ransomware attack: https://en.wikipedia.org/wiki/WannaCry_ransomware_attack
-* S3 Pricing: https://aws.amazon.com/s3/pricing/
-* HIGH AVAILABILITY - NO OF NINES : https://en.wikipedia.org/wiki/High_availability
-* Atlassian Incident Handbook : https://www.atlassian.com/incident-management/handbook/postmortems#postmortem-issue-fields
-* GitHub Post-incident analysis: https://github.blog/2018-10-30-oct21-post-incident-analysis/
-* AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
-
-================================================================================================
-
 ## DESIGN FOR PEROFRMANCE AND SCALIBILITY
 #### Key Points
 * Moving to the cloud doesn’t guarantee that your application will be faster and cost less to operate. In fact, without the 
@@ -181,7 +163,7 @@ cloudwatch-metrics.html
 * Moving to the cloud should improve network response times. Global edge cache locations can bring the server closer to the end user.
 
 ## OUTLINE
-![image](https://user-images.githubusercontent.com/13011167/84308697-90b07800-ab7c-11ea-96fd-02f5f0308723.png)
+![image](https://user-images.githubusercontent.com/13011167/84561275-b0a48f00-ad68-11ea-8f80-35f421f74482.png)
 
 #### Examples Of Cloud Migration Goals:
 * We are migrating to the cloud to reduce our infrastructure costs by 25%
@@ -191,18 +173,6 @@ baseline.
 recovery
 * We are consolidating our data centers and moving to the cloud because our AWS account will provide one centralized view into 
 our environment with more visibility into how our compute spend is being utilized.
-
-### PREREQUISITIES FOR COURSE
-* VSCode 	https://code.visualstudio.com
-* Create an AWS Account 	https://portal.aws.amazon.com/billing/signup
-* AWS CLI 	https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-* Terraform 	https://learn.hashicorp.com/terraform/getting-started/install.html
-* LucidChart 	https://www.lucidchart.com
-
-### INSTALLATIONS
-* AWS CLI INSTALLATIONS: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-* TERRAFORM INSTALLATIONS: https://learn.hashicorp.com/terraform/getting-started/install.html
-* DIAGRAM APPLICATION: https://www.lucidchart.com/
 
 ## A. COST AND MONITORING
 ### How the AWS Cost Structure Works : Three Ways to Calculate AWS Costs
@@ -278,7 +248,6 @@ My Solution: Your solution might be different, but here is what I came up with:
 necessary
 * Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
 
-![image](https://user-images.githubusercontent.com/13011167/84431191-82c82900-ac48-11ea-914a-18cfe877d3f9.png)
 ## PERFORMANCE IN CLOUD
 * Moving your applications to the cloud doesn’t guarantee that your performance issues will automatically be resolved, 
   especially if you lift and shift.
@@ -335,8 +304,57 @@ a certain period of time.
 
 ![image](https://user-images.githubusercontent.com/13011167/84434646-118b7480-ac4e-11ea-99d8-1ddb505b1673.png)
 
+## INFRASTRUCTURE AS A CODE (IAC)
+Infrastructure as code is auditable and repeatable, which is perfect for large cloud implementations under the management of Cloud 
+Governance where starting over for every new project or lifecycle is a tedious manual job with the potential for errors and compliance 
+deviations.
+#### Key Points
+* Infrastructure as code is also sometimes referred to as software defined infrastructure.
+* AWS CloudFormation makes it easy to use programming languages or even a text file to securely model and provision the resources you 
+  need to run your application.
+* One potential drawback of opting for AWS CloudFormation is that it effectively locks you into AWS as a cloud provider, unless you want 
+  to start over.
+#### What is Terraform?
+* Terraform is an Open source Infrastructure as code software tool.
+* Terraform code is written in Hashicorp configuration language or HCL, a structured configuration language that is human and machine   
+  readable for use at the command line.
+* Terraform is cloud neutral, meaning the APIs it provides do not lock the user to any one particular cloud provider.
+* Learning about Infrastructure as Code and Terraform is a great step toward advancing your career in cloud architecture.
+#### Getting Started With Terraform
+* Download Terraform : https://www.terraform.io/downloads.html
+* In order to authenticate Terraform to your AWS account, you need to set the AWS credentials for the IAM user you are using for the   
+  course.
+
+## SERVERLESS COMPUTING
+### CLOUD MIGRATION 
+#### Lift and Shift	The process of moving your application from an on-premises environment to the cloud without making any major changes to the code.
+#### Cloud Native	An app that has been engineered specifically to use cloud services and infrastructure
+#### Key Points
+* Lift and Shift is the simple process of moving your application from an on-premises environment to the cloud without making any 
+  significant changes to the code. AWS Server migration can assist with this process.
+* Lift and Shift migrations don’t have many options for performance improvements other than to allocate additional resources where 
+  bottlenecks are observed. This exposes the company to the potential for excessive compute costs.
+* Not all applications aren’t good candidates for cloud-native redesign, but a redesign can advantage of cloud services like optimized 
+  instances and AWS RDS to produce improved performance
+* The best candidates for cloud native redesign are lightweight applications whose functions can be driven by events like API calls, 
+  file uploads, database updates, and messages being added to a queue.
+  ![image](https://user-images.githubusercontent.com/13011167/84561814-30ccf380-ad6d-11ea-95bd-12b822dda558.png)
+
+### SERVERLESS COST
+
 
 ### IMPORTANT LINKS FOR READING
+* Global Infrastructure : https://aws.amazon.com/about-aws/global-infrastructure/
+* Case Studies: https://aws.amazon.com/solutions/case-studies/?customer-references-cards.sort-by=item.additionalFields.publishedDate&customer-references-cards.sort-order=desc
+* AWS Realiability Pillar : https://d1.awsstatic.com/whitepapers/architecture/AWS-Reliability-Pillar.pdf
+* CIDR : https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
+* NAT: https://en.wikipedia.org/wiki/Network_address_translation
+* WannaCry ransomware attack: https://en.wikipedia.org/wiki/WannaCry_ransomware_attack
+* S3 Pricing: https://aws.amazon.com/s3/pricing/
+* HIGH AVAILABILITY - NO OF NINES : https://en.wikipedia.org/wiki/High_availability
+* Atlassian Incident Handbook : https://www.atlassian.com/incident-management/handbook/postmortems#postmortem-issue-fields
+* GitHub Post-incident analysis: https://github.blog/2018-10-30-oct21-post-incident-analysis/
+* AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
 * CLOUD MIGRATION : https://www.cloudindustryforum.org/content/getting-cloud-faster-5-ws-cloud-migration
 * CLOUD MIGRATION WITH AWS : https://aws.amazon.com/cloud-migration/
 * AWS BLOGS: https://aws.amazon.com/blogs/aws/
@@ -354,3 +372,4 @@ a certain period of time.
 * SAVE MONEY WITH VPC ENDPOINT: https://medium.com/nubego/how-to-save-money-with-aws-vpc-endpoints-9bac8ae1319c
 * HOW TO HAVE AWS BUDGET UNDER CONTROL:  https://jatheon.com/blog/aws-reduce-costs/
 * TYPE OF INSTANCES: https://aws.amazon.com/ec2/instance-types/
+
