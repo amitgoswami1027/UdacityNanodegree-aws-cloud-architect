@@ -341,6 +341,24 @@ deviations.
   ![image](https://user-images.githubusercontent.com/13011167/84561814-30ccf380-ad6d-11ea-95bd-12b822dda558.png)
 
 ### SERVERLESS COST
+* Lambda requests are billed based on : number of requests/function invocations and duration of compute time and allocated memory
+* Duration is billed per 100ms. Lambda works better for small scale apps
+* EC2 works better for long-running functions
+* Lambda functions are stateless and run in short-lived containers. There is a "cold-start" delay after a period of inactivity but that 
+  can be avoided by using a keep warm service
+* Serverless can also bring cost savings because fewer people are needed for operations support
+* When to Use Lambda: AWS Lambda is optimal for applications with irregular usage patterns and lulls between spikes in activity
+* AWS Lambda is not a good choice for applications with regular, consistent, or steady workloads and long running functions. It might 
+  end up being more costly than EC2 instances.Consider the considerable cost of re-architecting an application when deciding if AWS 
+  Lambda is a good choice. It might be!
+* Cold Start	The delayed response that occurs when a new labda instance receives its first request.
+* Keep Warm	A periodic ping or function call to lambdas to keep them on in order to avoid the delay of cold starts
+* https://dashbird.io/lambda-cost-calculator/
+
+#### AWS Lambda Calculator: https://s3.amazonaws.com/lambda-tools/pricing-calculator.html
+#### AWS EC2 PRICING: https://aws.amazon.com/ec2/pricing/on-demand/
+#### EC2 RESERVED INSTANCE: https://aws.amazon.com/ec2/pricing/reserved-instances/pricing/
+![image](https://user-images.githubusercontent.com/13011167/84564983-975d0c00-ad83-11ea-9ea7-6b96e3a694c2.png)
 
 
 ### IMPORTANT LINKS FOR READING
