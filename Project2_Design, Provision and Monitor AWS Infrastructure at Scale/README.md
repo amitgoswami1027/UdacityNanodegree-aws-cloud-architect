@@ -1,3 +1,41 @@
+## AWS ARCHITECT NANODEGREE - PROJECT-02
+
+# Design, Provision and Monitor AWS Infrastructure at Scale
+### PREREQUISITIES FOR COURSE
+* VSCode 	https://code.visualstudio.com
+* Create an AWS Account 	https://portal.aws.amazon.com/billing/signup
+* AWS CLI 	https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+* Terraform 	https://learn.hashicorp.com/terraform/getting-started/install.html
+* LucidChart 	https://www.lucidchart.com
+
+### INSTALLATIONS
+* AWS CLI INSTALLATIONS: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+* TERRAFORM INSTALLATIONS: https://learn.hashicorp.com/terraform/getting-started/install.html
+* DIAGRAM APPLICATION: https://www.lucidchart.com/
+
+### Steps to Install Terraform on Windows
+* STEP-01 A Terraform module best practice is to have separate git repositories for reusable modules and live infrastructure and specify   a versioned module git URL in the source parameter instead of your local filesystem.Terraform modules can be created and shared among 
+  Terraform users on Terraform Registry or in private registries. Using premade modules is a good way to get started.
+* Terraform is a declarative Language. An example of how declarative code differs from procedural code would be changing the number of 
+  servers in a .tf file to increase the number of running servers from 2 to 4. Terraform would recognize that two servers have already   
+  been created based on the .tfstate, and add two more because the end goal is 4 servers. In procedural language such as an AWS CLI 
+  command, increasing the server count to 4 would result in 4 additional servers.
+* STEP-02: First, ensure that you are using an administrative shell - you can also install as a non-admin, check out Non-Administrative 
+  Installation. Install Chocolatey. Chocolatey is a free and open-source package management system for Windows. Install the Terraform 
+  package from the command-line.
+* STEP-03: Install Chocolatey. 
+  ```
+  Command: @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command   "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET  "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+  ```
+* STEP-04: choco install terraform ; Set the Path Environment variable to the location of terraform binary.
+* STEP-05: terraform -verion
+* Terraform Commands
+  * terraform init
+  * terraform apply
+  * terraform destroy
+* STEP-06: In order to maintain your tfstate file properly, you MUST have versioning enabled on your S3 bucket. When the state file is 
+  stored remotely in S3, it can be versioned and shared collaboratively
+
 ## DESIGN FOR PEROFRMANCE AND SCALIBILITY
 #### Key Points
 * Moving to the cloud doesn’t guarantee that your application will be faster and cost less to operate. In fact, without the 
@@ -20,18 +58,6 @@ baseline.
 recovery
 * We are consolidating our data centers and moving to the cloud because our AWS account will provide one centralized view into 
 our environment with more visibility into how our compute spend is being utilized.
-
-### PREREQUISITIES FOR COURSE
-* VSCode 	https://code.visualstudio.com
-* Create an AWS Account 	https://portal.aws.amazon.com/billing/signup
-* AWS CLI 	https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-* Terraform 	https://learn.hashicorp.com/terraform/getting-started/install.html
-* LucidChart 	https://www.lucidchart.com
-
-### INSTALLATIONS
-* AWS CLI INSTALLATIONS: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-* TERRAFORM INSTALLATIONS: https://learn.hashicorp.com/terraform/getting-started/install.html
-* DIAGRAM APPLICATION: https://www.lucidchart.com/
 
 ## A. COST AND MONITORING
 ### How the AWS Cost Structure Works : Three Ways to Calculate AWS Costs
