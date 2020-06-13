@@ -91,9 +91,9 @@ Export your schematic as a PDF and save as Udacity_Diagram_2.pdf
     the CSV file below the cost estimate.
 ### SOLUTION : (initial_cost_estimate.csv;reduced_cost_estimate.csv and increased_cost_estimate.csv enclosed for reference)
 ### Links for cost computaitons:
-* [Initial Cost]: https://calculator.aws/#/estimate?id=b909c3b2e8839a9108abb974f40bec561af0ab66
-* [Reduced Cost]: https://calculator.aws/#/estimate?id=72b87c780f7e9c11ecf9da3835d46415c9ef4ecf
-* [Enhanced Cost]: https://calculator.aws/#/estimate?id=410248567d79f29af9c89e0b99c77a9182f35207
+* Initial Cost: https://calculator.aws/#/estimate?id=b909c3b2e8839a9108abb974f40bec561af0ab66
+* Reduced Cost: https://calculator.aws/#/estimate?id=72b87c780f7e9c11ecf9da3835d46415c9ef4ecf
+* Enhanced Cost: https://calculator.aws/#/estimate?id=410248567d79f29af9c89e0b99c77a9182f35207
 ### Reduced costs changes- Modifications
 * Use of smaller EC2 and RDS instances
 * We can also make use of the reserved instances booked for 1-3 year duraiton to reduce cost.  * Using reserved instances will   
