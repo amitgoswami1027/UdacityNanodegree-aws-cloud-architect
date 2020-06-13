@@ -1,6 +1,6 @@
 ## AWS CLOUD ARCHITECT - NanoDegree (MyNotes)
 
-## Design For Availability,Reliability and Resiliency
+# Design For Availability,Reliability and Resiliency
 * Availability: A measure of time that a system is operating as expected. Typically measured as a percentage.
 * Reliability: A measure of how likely something is to be operating as expected at any given point in time. Said differently, 
   how often something fails.
@@ -151,7 +151,7 @@ bucket in case the primary is not available.
 * AWS Services That Publish CloudWatch Metrics : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-
 cloudwatch-metrics.html
 
-## DESIGN FOR PEROFRMANCE AND SCALIBILITY
+# DESIGN FOR PEROFRMANCE AND SCALIBILITY
 #### Key Points
 * Moving to the cloud doesn’t guarantee that your application will be faster and cost less to operate. In fact, without the 
   proper baseline metrics, you won’t know where to start when planning your move.
@@ -208,7 +208,9 @@ There is no cost for uploading data into the AWS cloud, although you will pay fo
 * Avoid inter-region data transfer costs
 * Peering via AWS Transit Gateway for VPCs reduces costs
 
-### INSTANCE PRICING
+![image](https://user-images.githubusercontent.com/13011167/84577111-0b74cf80-add7-11ea-9804-da6022ee1b7a.png)
+
+### INSTANCE PRICING (EC2)
 AWS EC2 instance pricing is straightforward, but it can quickly become complex when you take up the task of optimizing your environment to achieve the ideal cost/performance balance.
 * Explore OS licensing pricing and options
 * Limit the users and roles that can launch production instances
@@ -216,7 +218,7 @@ AWS EC2 instance pricing is straightforward, but it can quickly become complex w
 * Save by moving to new generation instances when available
 * When optimizing your computing usage to reduce your monthly spend, one of the first places you want to count your costs is 
 in your EC2 instances, and one of the best resources here is using reserved instances. 
-
+![image](https://user-images.githubusercontent.com/13011167/84577161-7b835580-add7-11ea-90b1-04c85982e089.png)
 #### Reserved and Spot Instances
 * Reserved instances offer a savings of almost 70% in some cases. In exchange for an upfront commitment of 1 or 3 years, AWS 
 offers significant savings, which increases a bit depending on how you choose to pay. Paying in advance will save you even 
@@ -248,7 +250,7 @@ My Solution: Your solution might be different, but here is what I came up with:
 necessary
 * Store the media in S3 Glacier for the remainder of the 180 days, then delete per the lifecycle policy
 
-## PERFORMANCE IN CLOUD
+## B. PERFORMANCE IN CLOUD
 * Moving your applications to the cloud doesn’t guarantee that your performance issues will automatically be resolved, 
   especially if you lift and shift.
   
@@ -304,7 +306,7 @@ a certain period of time.
 
 ![image](https://user-images.githubusercontent.com/13011167/84434646-118b7480-ac4e-11ea-99d8-1ddb505b1673.png)
 
-## INFRASTRUCTURE AS A CODE (IAC)
+## C. INFRASTRUCTURE AS A CODE (IAC)
 Infrastructure as code is auditable and repeatable, which is perfect for large cloud implementations under the management of Cloud 
 Governance where starting over for every new project or lifecycle is a tedious manual job with the potential for errors and compliance 
 deviations.
@@ -325,7 +327,7 @@ deviations.
 * In order to authenticate Terraform to your AWS account, you need to set the AWS credentials for the IAM user you are using for the   
   course.
 
-## SERVERLESS COMPUTING
+## D. SERVERLESS COMPUTING
 ### CLOUD MIGRATION 
 #### Lift and Shift	The process of moving your application from an on-premises environment to the cloud without making any major changes to the code.
 #### Cloud Native	An app that has been engineered specifically to use cloud services and infrastructure
