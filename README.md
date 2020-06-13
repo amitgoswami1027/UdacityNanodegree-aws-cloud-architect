@@ -10,12 +10,8 @@
 business functions tend to be concerned with a companies SLAs as they have wide-spread impact. The business both expects its vendors to 
 meet their SLAs, and it is vital for a company to achieve its published SLAs in order to meet contractual obligations and support its 
 customers.
-
 ### OUTLINE
 ![image](https://user-images.githubusercontent.com/13011167/84280300-be81c680-ab54-11ea-9fec-8f87cca533aa.png)
-
-
-
 ### 1. AZs AND REGIONS - HA Design
 * AWS has around 22 Regions and 2-3 AZs in each Region.
 * Highly available design is critical. Building for failover must be considered at every level of a system. Allowing for any 
@@ -308,7 +304,7 @@ a certain period of time.
 
 ![image](https://user-images.githubusercontent.com/13011167/84434646-118b7480-ac4e-11ea-99d8-1ddb505b1673.png)
 
-### INFRASTRUCTURE AS A CODE (IAC)
+## INFRASTRUCTURE AS A CODE (IAC)
 Infrastructure as code is auditable and repeatable, which is perfect for large cloud implementations under the management of Cloud 
 Governance where starting over for every new project or lifecycle is a tedious manual job with the potential for errors and compliance 
 deviations.
@@ -329,6 +325,22 @@ deviations.
 * In order to authenticate Terraform to your AWS account, you need to set the AWS credentials for the IAM user you are using for the   
   course.
 
+## SERVERLESS COMPUTING
+### CLOUD MIGRATION 
+#### Lift and Shift	The process of moving your application from an on-premises environment to the cloud without making any major changes to the code.
+#### Cloud Native	An app that has been engineered specifically to use cloud services and infrastructure
+#### Key Points
+* Lift and Shift is the simple process of moving your application from an on-premises environment to the cloud without making any 
+  significant changes to the code. AWS Server migration can assist with this process.
+* Lift and Shift migrations don’t have many options for performance improvements other than to allocate additional resources where 
+  bottlenecks are observed. This exposes the company to the potential for excessive compute costs.
+* Not all applications aren’t good candidates for cloud-native redesign, but a redesign can advantage of cloud services like optimized 
+  instances and AWS RDS to produce improved performance
+* The best candidates for cloud native redesign are lightweight applications whose functions can be driven by events like API calls, 
+  file uploads, database updates, and messages being added to a queue.
+  ![image](https://user-images.githubusercontent.com/13011167/84561814-30ccf380-ad6d-11ea-95bd-12b822dda558.png)
+
+### SERVERLESS COST
 
 
 ### IMPORTANT LINKS FOR READING
