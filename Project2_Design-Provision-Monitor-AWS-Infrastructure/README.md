@@ -14,7 +14,7 @@
 * DIAGRAM APPLICATION: https://www.lucidchart.com/
 
 ### Steps to Install Terraform on Windows
-* STEP-01 A Terraform module best practice is to have separate git repositories for reusable modules and live infrastructure and specify   a versioned module git URL in the source parameter instead of your local filesystem.Terraform modules can be created and shared among 
+* STEP-01  A Terraform module best practice is to have separate git repositories for reusable modules and live infrastructure and specify   a versioned module git URL in the source parameter instead of your local filesystem.Terraform modules can be created and shared among 
   Terraform users on Terraform Registry or in private registries. Using premade modules is a good way to get started.
 * Terraform is a declarative Language. An example of how declarative code differs from procedural code would be changing the number of 
   servers in a .tf file to increase the number of running servers from 2 to 4. Terraform would recognize that two servers have already   
@@ -54,7 +54,7 @@ your name and label all elements of the infrastructure on the diagram.
 * Application Servers Load Balanced and Autoscaled
 * A Master DB in AZ1 with a read replica in AZ2
 Use LucidChart or a similar diagramming application to create your schematic. Export your schematic as a PDF and save as Udacity_Diagram_1.pdf.
-### SOLUTION : Taking the architecture forward from the Project-01:Data DUrability and Recovery, here goes the details of the initial. 
+### SOLUTION : Taking the architecture forward from the "Project-01:Data Durability and Recovery", here goes the details of the initial. 
 AWS Architecutre for the above problem statement.To be cost effective I will be using the Multi-AZ architecutre as Multi region will 
 be costly and believe for 50k users it does not make sense to go from multi-region architecture option.
 * In order to achieve the durability and availability in AWS you must go for multi AZ Architecutre, us-east-1a and us-east-1b. 
@@ -94,12 +94,12 @@ Export your schematic as a PDF and save as Udacity_Diagram_2.pdf
 * Initial Cost: https://calculator.aws/#/estimate?id=b909c3b2e8839a9108abb974f40bec561af0ab66
 * Reduced Cost: https://calculator.aws/#/estimate?id=72b87c780f7e9c11ecf9da3835d46415c9ef4ecf
 * Enhanced Cost: https://calculator.aws/#/estimate?id=410248567d79f29af9c89e0b99c77a9182f35207
-### Reduced costs changes- Modifications
+### [RATIONALE]: Reduced costs changes- Modifications
 * Use of smaller EC2 and RDS instances
 * We can also make use of the reserved instances booked for 1-3 year duraiton to reduce cost.  * Using reserved instances will   
   significantly reduce costs but will lock the platform into using the selected infrastructure for the next year. 
 * Using smaller EC2 instances allows for more granular autoscaling though could reduce performance.
-### Increased costs changes- Modifications
+### [RATIONALE]: Increased costs changes- Modifications
 * Larger RDS instances and increased EC2 instances for scaling and performance. 
 * We can also make use of another AZ in Us-east-1, probably use-east-1c.
 * We can also make use of the multi region configrations to enhance the durability abd availability for disastory management - Second 
@@ -140,7 +140,7 @@ Submit a screenshot of the Password Policy from the IAM Account settings page. N
 #### Added CloudWatch_alarm.png with AmitG tagged. Also please find the enclosed shapshot for your reference.
 ![image](https://user-images.githubusercontent.com/13011167/84587920-e5841500-ae40-11ea-9866-c7f6bec9ba61.png)
 
-## Task 5 : Use Terraform to Provision AWS Infrastructure
+## Task 5 : Use Terraform to Provision AWS Infrastructure [Done]
 ### Part 1
 * 1. Download the starter code.
 * 2. In the main.tf file write the code to provision
@@ -153,7 +153,7 @@ Submit a screenshot of the Password Policy from the IAM Account settings page. N
 * 4. Take a screenshot of the 6 EC2 instances in the AWS console. Save it as Terraform_1_1.png or Terraform_1_1.jpg .
 * 5. Use Terraform to delete the 2 m4.large instances.
 * 6. Take an updated screenshot of the AWS console showing only the 4 t2.micro instances and save it as Terraform_1_2.png or Terraform_1_2.jpg
-#### Terraform_1_1.png & Terraform_1_2.png added to the repo for review.
+#### SOLUTION: Terraform_1_1.png & Terraform_1_2.png added to the repo for review.
 ### Part 2
 * 1. In the Exercise_2 folder, write the code to deploy an AWS Lambda Function using Terraform. Your code should include:
      * A lambda.py file
@@ -164,13 +164,13 @@ Submit a screenshot of the Password Policy from the IAM Account settings page. N
 * 3. Take a screenshot of the VPC page and save it as Terraform_2_2.png or Terraform_2_2.jpg.
 * 4. Take a screenshot of the CloudWatch log entry for the lambda function execution and save it as Terraform_2_3.png or 
      Terraform_2_3.jpg.
-#### Terraform_2_1.png & Terraform_2_2.png added to the repo for review.
+#### SOLUTION: Terraform_2_1.png & Terraform_2_2.png added to the repo for review.
 
 ## Task 6: Destroy the Infrastructure using Terraform and prepare for submission
 * Destroy all running provisioned infrastructure using Terraform so as not to incur unwanted charges.
 * Take a screenshot of the EC2 instances page and label it Terraform_destroyed.png or Terraform_destroyed.jpg .
 * Upload Terraform files, screenshots, schematics and CSV files to your GitHub repo
-### SOLUTION : Terraform_destroyed.png added to the repo for review
+### SOLUTION: Terraform_destroyed.png added to the repo for review
 
 ### IMPORTANT LINKS FOR READING
 * CLOUD PRICING: https://cloud.withgoogle.com/build/infrastructure/public-cloud-pricing-explained/
