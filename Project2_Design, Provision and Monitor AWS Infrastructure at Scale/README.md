@@ -121,13 +121,38 @@ Submit a screenshot of the Password Policy from the IAM Account settings page. N
      conforms to your password policy. Require them to change their password when they login.
 * 5. Assign CloudTrail to the CloudTrailAdmins group. Assign Accountant to the Reviewers group .
 * 6. Test both user accounts by logging into the AWS console as the users CloudTrail and Accountant after changing their passwords on 
-     login. Login using your numerical AccountID
+     login. Login using your numerical AccountID.
 
+## Task 4: Set up Cost Monitoring-[Done]
+* Configure CloudWatch billing alarm
+* Set up a Billing alarm with a $5 threshold
+* Set up notification so that you get an email alert when the alarm is triggered.
+* Save a screenshot of the CloudWatch Alarms page showing the new alarm with a green OK status as CloudWatch_alarm.png or 
+  CloudWatch_alarm.jpg
+### SOLUTION: 
+* Steps-01 : Setting Up an Amazon SNS Topic Using the AWS Management Console.
+  * Create an SNS topic,
+  * Subscribe to an SNS topic(Provide email for notifications, confirm the email.)
+  * Publish a test message to an SNS topic.
+* Step-02 : Create the Cloud watch alarm with the specification given in the above task.
+* Step-03 : In case we recieve the INSUFFICIENT DATA, need to check if the instance or services are not running, some services publish 
+  the data at some specific interval, so need to wait. INSUFFICIENT DATA is not the error scenario and its a normal state.
+#### Added CloudWatch_alarm.png with AmitG tagged. Also please find the enclosed shapshot for your reference.
+![image](https://user-images.githubusercontent.com/13011167/84587920-e5841500-ae40-11ea-9866-c7f6bec9ba61.png)
 
-
-
-
-
+## Task 5 : Use Terraform to Provision AWS Infrastructure
+### Part 1
+* 1. Download the starter code.
+* 2. In the main.tf file write the code to provision
+     * AWS as the cloud provider
+     * Use an existing VPC ID
+     * Use an existing public subnet
+     * AWS t2.micro EC2 instances named Udacity T2
+     * 2 m4.large EC2 instances named Udacity M4
+* 3. Run Terraform.
+* 4. Take a screenshot of the 6 EC2 instances in the AWS console. Save it as Terraform_1_1.png or Terraform_1_1.jpg .
+* 5. Use Terraform to delete the 2 m4.large instances.
+* 6. Take an updated screenshot of the AWS console showing only the 4 t2.micro instances and save it as Terraform_1_2.png or Terraform_1_2.jpg
 
 
 ## DESIGN FOR PEROFRMANCE AND SCALIBILITY
