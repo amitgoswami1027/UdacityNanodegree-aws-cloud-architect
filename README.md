@@ -363,6 +363,119 @@ deviations.
 ![image](https://user-images.githubusercontent.com/13011167/84564983-975d0c00-ad83-11ea-9ea7-6b96e3a694c2.png)
 
 
+# DESIGN FOR SECURITY
+![image](https://user-images.githubusercontent.com/13011167/84625561-1d529180-af01-11ea-8e26-a1efd02fef42.png)
+
+## 1. SECURING ACCESS TO CLOUD RESOURCES
+#### Securing Access
+* Identity and Access Management in the cloud is the cornerstone of a secure environment.
+* Securing access to the control plane will determine security on a network, data, and resource consumption level.
+
+#### A COMMON USE CASE
+Imagine a situation where keys in a config file or code were accidently pushed to a repository which is viewable by unauthorized parties, such as a public GitbHub repo. Or, imagine a situation where a user's laptop or server were compromised and keys were stolen. This could be disastrous depending on how users are given access to information and services.
+
+A much better alternative to managing sensitive keys all together is to provide access using Identity Access Management (IAM) roles. The key benefit to IAM roles is that all credentials are temporary once assumed and there is no need to store API keys permanently.
+#### ASSUMING ROLE :
+* Applications running on containers and servers can simply assume roles which are assigned to the server infrastructure 
+  without the need to handle API keys within code or config files.
+* Additionally, IAM roles can be used to provide access to a multi AWS account structure without the need for managing users 
+  across many accounts - which is a common challenge.
+* Another benefit is that IAM roles pave the way for devising an elevated privilege model or complete identity federation. 
+  This removes the risk associated with managing users and identities in AWS.
+* Identity federation involves trusting a centralized identity provider that your organization is using to effectively shift   
+  user management and authorization from your AWS account to the identity provider.
+![image](https://user-images.githubusercontent.com/13011167/84625672-64408700-af01-11ea-8b8c-71f47feab4a1.png)
+
+#### IAM Roles for Applications
+* Applications running on instances or containers should use instance profile roles and not user api keys.
+* Instance profile role is a special role that is assigned to EC2 instances which allow applications running on those 
+instances to obtain temporary credentials aligned with that role.
+
+#### IAM Roles for Users
+* All users should be using multi-factor authentication (MFA) protected role escalation or identity federation.
+
+![image](https://user-images.githubusercontent.com/13011167/84627645-e41c2080-af04-11ea-9c72-7b115eba1568.png)
+
+![image](https://user-images.githubusercontent.com/13011167/84628050-98b64200-af05-11ea-882e-465cc29d9c44.png)
+
+### Identity Federation for Controlling User Access
+* Using IAM roles is more secure than provisioning IAM users and managing API keys.
+* Identity federation allows an organization to manage identities using an external identity provider instead of attempting to 
+  provision and manage user identities from within the AWS environment.
+* If a mobile or web application requires access to the AWS API, the user of that application can authenticate with a web 
+  identity provider such as facebook, google, or amazon to obtain temporary API credentials.
+* Identity Federation - Identity Federation enables you to manage access to your AWS resources centrally. With federation, you 
+  can use single sign-on (SSO) to access your AWS accounts using credentials from your corporate directory. Federation uses 
+  open standards, such as Security Assertion Markup Language 2.0 (SAML), to exchange identity and security information between 
+  an identity provider (IdP) and an application.
+* External Identity Providers-An identity provider external to your AWS accounts. Examples include corporate ADFS, cloud-based 
+ identity-as-a-service provider, or web identity provider, such as Google or Facebook.
+* Identity providers such as ADFS and cloud identity providers use open standards such as SAML 2.0. Web identity providers 
+  such as Google or Facebook comply with OpenID Connect. Both SAML 2.0 and OpenID Connect allow the exchange of identity 
+  information between the Identity Provider (IdP) and AWS.
+
+#### Examples of External Identity Providers
+ * SAML 2.0 Identity Providers
+   * Corporate active directory
+   * Cloud-based identity providers such as Okta, OneLogin, Ping, Centrify, AWS SSO, etc.
+ * Web Identity Providers
+   * Facebook, Google, Amazon, etc.
+
+Identity providers can provide role based access control mapped to IAM roles and AWS accounts.
+
+#### Two Primary Security Benefits of Incorporating Identity Federation
+* Organizations can centrally manage users, their identities and authentication, and their various roles with respect to 
+access to various applications and platforms. This will allow onboarding and offboarding of an employee's access to entities 
+such as AWS seamless and compliant with an organizations approval and off boarding processes. An example of this would be an 
+employee that has access to multiple AWS accounts, Azure, windows servers, corporate VPN etc, If the employee leaves the 
+organization, this access can be revoke centrally.
+* Identity federation removes the need to use AWS IAM users and user api keys. Access to the API is then always dependent on 
+IAM roles via federation.
+
+![image](https://user-images.githubusercontent.com/13011167/84633811-94425700-af0e-11ea-8e9a-d571d77fe8d8.png)
+
+* SAML 2.0 IDENTITY Federation: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html
+* Web Identify Fedration: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html
+
+#### Least Privilege Access - Granting a user or application only the permissions they need to do the required task.
+* When creating IAM policies that provide permissions to users and roles, we want to follow the common security practice of 
+  granting least privilege. Least Privilege means we grant only the permissions required to perform the necessary tasks.
+* For that reason it is critical to fine-tune IAM policies to restrict and limit, at minimum:
+  * What Can be Done (Actions)
+  * To What (Resources)
+  * By Who (Principals, Trust Policies)
+In the below example, we have an IAM policy that allows specific actions and limits those actions to a specific resource - in this case, the recipes table.
+```
+      {
+            "Sid": "DDBTableAccessLeastPrivilege",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:BatchGet*",
+                "dynamodb:DescribeStream",
+                "dynamodb:DescribeTable",
+                "dynamodb:Get*",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:BatchWrite*",
+                "dynamodb:Delete*",
+                "dynamodb:Update*",
+                "dynamodb:PutItem"
+            ],
+            "Resource": "arn:aws:dynamodb:*:*:table/recipes"
+        }
+
+```
+
+## 2. Securing Access to Cloud Infrastructure
+![image](https://user-images.githubusercontent.com/13011167/84639169-a4116980-af15-11ea-8082-0b9df629684e.png)
+
+
+
+
+
+
+
+
 ### IMPORTANT LINKS FOR READING
 * Global Infrastructure : https://aws.amazon.com/about-aws/global-infrastructure/
 * Case Studies: https://aws.amazon.com/solutions/case-studies/?customer-references-cards.sort-by=item.additionalFields.publishedDate&customer-references-cards.sort-order=desc
