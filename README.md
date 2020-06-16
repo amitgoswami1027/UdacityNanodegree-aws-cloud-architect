@@ -468,9 +468,78 @@ In the below example, we have an IAM policy that allows specific actions and lim
 
 ## 2. Securing Access to Cloud Infrastructure
 ![image](https://user-images.githubusercontent.com/13011167/84639169-a4116980-af15-11ea-8082-0b9df629684e.png)
+### When designing and deploying cloud networks and infrastructure there are a few key questions to be asking related to security controls:
+* Which trusted networks will traffic to your cloud environment originate from?
+* Which components in your environment will need network connectivity to other components?
+* Are security groups and network ACLs as specific as possible?
+* Which components will be taking traffic from the internet?
+* How is access to servers managed?
+* Have outbound traffic needs been identified?
 
+### Techniques to Provide Secure Access to Servers
+#### Deploy Immutable Instances
+* Prevent unauthorized access through deploying servers as immutable components.
+* Immutable instances are launched from virtual machine images that are created in a private environment. The images have 
+  ideally gone through security patching and hardening, custom configuration, application code deployment, and vulnerability 
+  scanning.
+* When it’s time to update the application, a new image is created and deployed and the old instance is then deprovisioned.
+* During this cycle no individual ever needs to login to the instance.
+* This is a huge step in the right direction in protecting instances from security breaches and unauthorized access.
+![image](https://user-images.githubusercontent.com/13011167/84762969-1f901b00-afe9-11ea-9d02-c699df4c71fd.png)
 
+#### Configuration Management Tools
+Use a configuration management tool to enforce hardening and configuration policies. Even in the event that someone deployed 
+an instance with insecure configuration, the configuration management tool would override this by applying the correct 
+configuration. Some popular tools with this regard are ansible, chef and puppet.
+![image](https://user-images.githubusercontent.com/13011167/84763156-641bb680-afe9-11ea-9181-9035e39d0bc9.png)
 
+#### Privileged Access Management Tools
+The use of a Privileged Access Management (PAM) tool can provide additional benefits such as:
+* time based or temporary access to elevated privileges
+* granular privilege management
+* session recording and audit trails
+* password and secrets management
+* multi factor authentication
+
+#### CONTROL TRAFFIC - INGRESS AND EGRESS
+* Ingress can be required to access services and resources that are running in our cloud environment. In-bound network traffic 
+  that is entering your cloud environment from the outside.
+* We also need to be able to access the internet or other external networks for our applications to be able to function. Out-
+  bound network traffic that is leaving your cloud environment.
+* Ingress traffic can be controlled and restricted using network ACLs, security groups, which are both effective firewalls, 
+  routing rules, and host based endpoint security tools which oftentimes contain firewall capabilities.
+* In addition to the configuration of ACLs and security groups, private access to VPC networks is also required, either from 
+  user work locations or from corporate-owned network spaces.
+* Egress traffic in AWS is generally handled using internet gateways and nat gateways. As with ingress traffic, egress traffic 
+  should also be controlled and restricted for a number of reasons.
+
+#### Egress Control - Using NACLs and security groups to restrict internet bound traffic to specific entities is not the best 
+approach.
+* AWS provides a few different conduits for connecting to internet sites from our VPC subnets:
+  * Resources deployed in a subnet can be assigned to public IP addresses and will have internet bound traffic routed through 
+    an "internet gateway".
+  * A NAT instance or NAT gateway can be deployed in public subnets so that instances in other subnets can use this device to 
+    gain access to the internet.
+* From a security perspective, it is not practical to deploy all application resources that require internet connectivity into 
+  a public subnet. This widens the attack surface and leaves the environment open to exploitation.
+* To solve this, a device such as the NAT gateway is the most common solution.
+* The shortfall with the NAT gateway solution from a security perspective is that it is difficult to monitor and restrict 
+  traffic at the application layer to specific domains and sites. 
+
+#### Securing Egress Traffic
+* Set Up a Web Proxy Layer: This is the simplest way to log application internet traffic. Proxies can also be used to restrict 
+  traffic to allowed sites. There are a few drawbacks:
+  * Additional Configuration: applications and instances that require internet access will need to be configured to make use 
+    of an http proxy.
+  * The proxy farm itself will need to be configured, managed and maintained.
+* In-Line Gateway Appliance: These appliances generally come from commercial vendors and provide a range of capabilities for 
+  controlling and inspecting outbound traffic out of the box. Cost is the biggest barrier to this approach.
+* Host-Based IDS: A host-based IDS is an agent based solution that runs on each instance. Providing many of the capabilities 
+  that the in-line gateway appliance provides including egress control and data loss prevention, intrusion detection and 
+  prevention. The biggest disadvantage is enforcing that all hosts in your environment have the agent running.
+* EGRESS CONTROL : https://aws.amazon.com/answers/networking/controlling-vpc-egress-traffic/
+
+#### Access to Cloud Networks
 
 
 
