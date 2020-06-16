@@ -539,7 +539,46 @@ approach.
   prevention. The biggest disadvantage is enforcing that all hosts in your environment have the agent running.
 * EGRESS CONTROL : https://aws.amazon.com/answers/networking/controlling-vpc-egress-traffic/
 
-#### Access to Cloud Networks
+ #### Access to Cloud Networks - Methods for Establishing Network Access to Resources Running in your Cloud Environments:
+ * Bastion Hosts: Bastion hosts, or jump hosts, are set up in a public subnet to allow a user to login from either their home 
+   or office network, and subsequently access or jump to resources in private networks.
+   * Pros: It is a simple and low cost method for getting onto your cloud VPC.
+   * Cons: It needs additional effort to harden the bastion host. It is not scalable for many users, and may not work if 
+     client applications need to be on the user's laptop or desktop. It is a common target for attackers who hope to gain 
+     access to the network by exploiting a vulnerability on the bastion host.
+     ![image](https://user-images.githubusercontent.com/13011167/84803584-d0b1a800-b01f-11ea-986b-c304823136f1.png)
+* Virtual Desktop Solution: Similar to a bastion host, except that each user will get their own virtual bastion.
+  * Pros: It allows users to install their desktop application clients in the cloud environment without having connectivity to 
+    the VPC from their local laptop
+  * Cons: It costs more than a bastion host. Users will not have direct connectivity to any backend services in the VPC.
+    ![image](https://user-images.githubusercontent.com/13011167/84804374-4ddd1d00-b020-11ea-9e0f-7a8b4f8d07ac.png)
+* Client VPN: A client VPN solution allows a user to connect to the cloud VPC using a secure VPN client to establish an 
+  encrypted tunnel.
+  * Pros: Easy to set up. It has the ability to manage many users and roles. It places the user into the VPC so that they may 
+    use client applications on their local host to hit the resources deployed in the VPC.
+  * Cons: It has additional cost as compared to a bastion host. Users may need to install proprietary VPN clients on their 
+    local machines.
+    ![image](https://user-images.githubusercontent.com/13011167/84804504-7fee7f00-b020-11ea-82c7-77e3adb592b6.png)
+* Site-to Site-VPN: We can connect a local trusted network's firewall with the AWS VPN service to establish VPN tunnel 
+  connectivity from the entire local network to the AWS VPC network.
+  * Pros: No need to install any VPN client software on each user's local machine.
+  * Cons: Additional routing and configuration needs to be performed on the local network. It often leads to delays in setup. 
+    No role based routing.
+    ![image](https://user-images.githubusercontent.com/13011167/84804645-b2987780-b020-11ea-926f-648e457c45ae.png)
+* Direct Connect Link: A dedicated link from a corporate office network or co-location datacenter.
+  * Pros: Dedicated bandwidth. It is ideal for hybrid cloud environments.
+  * Cons: Higher costs and require more time to set up. Once set up, if users are not on the corporate LAN, a solution such as 
+    VPN or VDI will still need to be implemented. Generally, it is not an option for small or virtual teams that do not have a      
+    LAN to work out of.
+    ![image](https://user-images.githubusercontent.com/13011167/84804787-e6739d00-b020-11ea-90a7-79ba9689c0e9.png)
+
+## 3. Protecting Data Stored in the Cloud
+Our goal was to minimize the risk of a malicious actor being able to access our networks and servers, invoke the AWS API, and, ultimately, perform destructive or unauthorized actions in our environments.
+
+It is crucial that the data that we are storing in the cloud is encrypted and that the encryption keys are correctly managed! In the event that there were to be a vulnerability to our network or AWS account settings, we want to reduce the risk of data being readable by an unauthorized party.
+![image](https://user-images.githubusercontent.com/13011167/84806088-cba22800-b022-11ea-97b4-2138b2daca94.png)
+
+### DATA ENCRYPTION
 
 
 
