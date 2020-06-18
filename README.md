@@ -579,6 +579,62 @@ It is crucial that the data that we are storing in the cloud is encrypted and th
 ![image](https://user-images.githubusercontent.com/13011167/84806088-cba22800-b022-11ea-97b4-2138b2daca94.png)
 
 ### DATA ENCRYPTION
+#### S3 Bucket Encryption
+![image](https://user-images.githubusercontent.com/13011167/85027898-11ccc800-b198-11ea-81a9-ef6c044ae64b.png)
+
+#### S3 Bucket Server-Side Encryption: S3 buckets provisioned in AWS support a few different methods of ensuring your data is encrypted when physically being stored on disk.
+* S3-Managed Keys : With this simple option, we can specify that any object written to S3 will be encrypted by S3 and the S3 
+service will manage the encryption keys behind the scenes. It is important to keep in mind that with this option anyone with 
+read access permissions to the bucket and file. Anyone with read permission will be able to make calls to the service to 
+retrieve the file unencrypted.
+* AWS-Managed Master Keys: In this option, the caller will need to specify that KMS will manage encryption keys for the S3 
+service. This provides additional auditability of S3's use of the encryption keys.
+* Customer-Managed Master Keys: Again, the caller will need to specify that KMS will manage encryption keys for the S3 
+service. The caller will also need to specify the key that will be used for encryption. Additionally, the caller needs to have 
+permissions to use the key. This provides additional ability to control and restrict which principals can access or decrypt 
+sensitive dat
+* Customer-Provided Keys:In this case, the customer can provide encryption keys to S3. S3 will perform the encryption on the 
+server without keeping the key itself. The key would then be provided with the request to decrypt the object. With this option 
+the burden of managing the key falls on the customer.
+
+Server-side encryption for AWS services is a very powerful and transparent way to ensure that security best practices are 
+implemented. We have highlighted this with S3, however, other AWS services, for example DynamoDB, also provide this 
+functionality.
+
+#### AWS KEY MANAGEMENT SERVICE (KMS)
+#### 1. AWS-Managed Customer Master Keys: The key is provisioned automatically by KMS when a service such as S3 or EC2 needs   
+  to use KMS to encrypt underlying data. A separate master key would be created for each service that starts using 
+  KMS.Permissions to AWS managed keys are also handled behind the scenes. Any principal or user who has access to a particular 
+  service would inherently have access to any encrypted data that the service had encrypted using the AWS managed keys. This 
+  approach is acceptable if the sole requirement is to ensure that data is encrypted at rest in AWS' data centers.
+* Using an example of a DynamoDB table that has encryption using AWS managed keys, all users or roles in the account that have 
+  read access to the dynamodb table would be able to read data from the table.
+* Limitations With AWS Managed CMKs: The main drawback here is that it does not allow granular and least privileged access to 
+  the keys. It would not be possible to segment and isolate permissions to certain keys and encrypted data. In addition to 
+  this limitation, AWS managed keys are not available for applications to use for client-side encryption since they are only 
+  available for use by AWS services.
+* This approach is also not recommended for accounts where sensitive data is present since in the event of the AWS account or 
+  role compromised for some reason, encrypted data may not be protected.
+  ![image](https://user-images.githubusercontent.com/13011167/85032029-f912e100-b19c-11ea-892d-b30d7ccb1880.png)
+
+#### 2. Customer-Managed Customer Master Keys: The second option is to explicitly provision the keys using KMS. In this case 
+   the user creates and manages permissions to the keys. The main benefit to this approach is that permissions to manage and  
+   use the keys can be explicitly defined and controlled. This allows separation of duties, segmentation of key usage etc. 
+* Again using DynamoDB as an example, we can have much more flexibility to restrict access to data by restricting access to 
+  encryption keys. For example we can have 2 separate master keys, for two different sets of tables or data classifications, 
+  for example non-sensitive and sensitive tables. We can also assign certain IAM roles to be able to use the keys, and other 
+  IAM roles to be able to manage the keys.
+
+#### 3. Bring Your Own Key: When new customer master keys are provisioned in KMS, by default, KMS creates and maintains the 
+key material for you. However, KMS also provides the customer the option of importing their own key material which may be 
+maintained in a key store external to KMS. With this option the customer has full control of the key's lifecycle including 
+expiration, deletion, and rotation.
+
+A potential use case for importing key material may be to maintain backup copies of the key material external to AWS to 
+fulfill disaster recovery requirements. Customers may also find this option useful if they have a desire to use one key 
+management system for cloud and on-premise infrastructure.
+
+
 
 
 
