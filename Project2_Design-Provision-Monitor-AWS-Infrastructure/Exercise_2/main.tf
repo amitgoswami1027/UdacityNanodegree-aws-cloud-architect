@@ -1,7 +1,7 @@
 provider "aws" {
   region = var.aws_region
-  access_key = "AKIA5JZ3OPQU5ULB4KVR"
-  secret_key = "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"
+  access_key = ""
+  secret_key = ""
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {

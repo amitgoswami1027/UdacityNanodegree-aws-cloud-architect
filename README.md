@@ -363,6 +363,283 @@ deviations.
 ![image](https://user-images.githubusercontent.com/13011167/84564983-975d0c00-ad83-11ea-9ea7-6b96e3a694c2.png)
 
 
+# DESIGN FOR SECURITY
+![image](https://user-images.githubusercontent.com/13011167/84625561-1d529180-af01-11ea-8e26-a1efd02fef42.png)
+
+## 1. SECURING ACCESS TO CLOUD RESOURCES
+#### Securing Access
+* Identity and Access Management in the cloud is the cornerstone of a secure environment.
+* Securing access to the control plane will determine security on a network, data, and resource consumption level.
+
+#### A COMMON USE CASE
+Imagine a situation where keys in a config file or code were accidently pushed to a repository which is viewable by unauthorized parties, such as a public GitbHub repo. Or, imagine a situation where a user's laptop or server were compromised and keys were stolen. This could be disastrous depending on how users are given access to information and services.
+
+A much better alternative to managing sensitive keys all together is to provide access using Identity Access Management (IAM) roles. The key benefit to IAM roles is that all credentials are temporary once assumed and there is no need to store API keys permanently.
+#### ASSUMING ROLE :
+* Applications running on containers and servers can simply assume roles which are assigned to the server infrastructure 
+  without the need to handle API keys within code or config files.
+* Additionally, IAM roles can be used to provide access to a multi AWS account structure without the need for managing users 
+  across many accounts - which is a common challenge.
+* Another benefit is that IAM roles pave the way for devising an elevated privilege model or complete identity federation. 
+  This removes the risk associated with managing users and identities in AWS.
+* Identity federation involves trusting a centralized identity provider that your organization is using to effectively shift   
+  user management and authorization from your AWS account to the identity provider.
+![image](https://user-images.githubusercontent.com/13011167/84625672-64408700-af01-11ea-8b8c-71f47feab4a1.png)
+
+#### IAM Roles for Applications
+* Applications running on instances or containers should use instance profile roles and not user api keys.
+* Instance profile role is a special role that is assigned to EC2 instances which allow applications running on those 
+instances to obtain temporary credentials aligned with that role.
+
+#### IAM Roles for Users
+* All users should be using multi-factor authentication (MFA) protected role escalation or identity federation.
+
+![image](https://user-images.githubusercontent.com/13011167/84627645-e41c2080-af04-11ea-9c72-7b115eba1568.png)
+
+![image](https://user-images.githubusercontent.com/13011167/84628050-98b64200-af05-11ea-882e-465cc29d9c44.png)
+
+### Identity Federation for Controlling User Access
+* Using IAM roles is more secure than provisioning IAM users and managing API keys.
+* Identity federation allows an organization to manage identities using an external identity provider instead of attempting to 
+  provision and manage user identities from within the AWS environment.
+* If a mobile or web application requires access to the AWS API, the user of that application can authenticate with a web 
+  identity provider such as facebook, google, or amazon to obtain temporary API credentials.
+* Identity Federation - Identity Federation enables you to manage access to your AWS resources centrally. With federation, you 
+  can use single sign-on (SSO) to access your AWS accounts using credentials from your corporate directory. Federation uses 
+  open standards, such as Security Assertion Markup Language 2.0 (SAML), to exchange identity and security information between 
+  an identity provider (IdP) and an application.
+* External Identity Providers-An identity provider external to your AWS accounts. Examples include corporate ADFS, cloud-based 
+ identity-as-a-service provider, or web identity provider, such as Google or Facebook.
+* Identity providers such as ADFS and cloud identity providers use open standards such as SAML 2.0. Web identity providers 
+  such as Google or Facebook comply with OpenID Connect. Both SAML 2.0 and OpenID Connect allow the exchange of identity 
+  information between the Identity Provider (IdP) and AWS.
+
+#### Examples of External Identity Providers
+ * SAML 2.0 Identity Providers
+   * Corporate active directory
+   * Cloud-based identity providers such as Okta, OneLogin, Ping, Centrify, AWS SSO, etc.
+ * Web Identity Providers
+   * Facebook, Google, Amazon, etc.
+
+Identity providers can provide role based access control mapped to IAM roles and AWS accounts.
+
+#### Two Primary Security Benefits of Incorporating Identity Federation
+* Organizations can centrally manage users, their identities and authentication, and their various roles with respect to 
+access to various applications and platforms. This will allow onboarding and offboarding of an employee's access to entities 
+such as AWS seamless and compliant with an organizations approval and off boarding processes. An example of this would be an 
+employee that has access to multiple AWS accounts, Azure, windows servers, corporate VPN etc, If the employee leaves the 
+organization, this access can be revoke centrally.
+* Identity federation removes the need to use AWS IAM users and user api keys. Access to the API is then always dependent on 
+IAM roles via federation.
+
+![image](https://user-images.githubusercontent.com/13011167/84633811-94425700-af0e-11ea-8e9a-d571d77fe8d8.png)
+
+* SAML 2.0 IDENTITY Federation: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html
+* Web Identify Fedration: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html
+
+#### Least Privilege Access - Granting a user or application only the permissions they need to do the required task.
+* When creating IAM policies that provide permissions to users and roles, we want to follow the common security practice of 
+  granting least privilege. Least Privilege means we grant only the permissions required to perform the necessary tasks.
+* For that reason it is critical to fine-tune IAM policies to restrict and limit, at minimum:
+  * What Can be Done (Actions)
+  * To What (Resources)
+  * By Who (Principals, Trust Policies)
+In the below example, we have an IAM policy that allows specific actions and limits those actions to a specific resource - in this case, the recipes table.
+```
+      {
+            "Sid": "DDBTableAccessLeastPrivilege",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:BatchGet*",
+                "dynamodb:DescribeStream",
+                "dynamodb:DescribeTable",
+                "dynamodb:Get*",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:BatchWrite*",
+                "dynamodb:Delete*",
+                "dynamodb:Update*",
+                "dynamodb:PutItem"
+            ],
+            "Resource": "arn:aws:dynamodb:*:*:table/recipes"
+        }
+
+```
+
+## 2. Securing Access to Cloud Infrastructure
+![image](https://user-images.githubusercontent.com/13011167/84639169-a4116980-af15-11ea-8082-0b9df629684e.png)
+### When designing and deploying cloud networks and infrastructure there are a few key questions to be asking related to security controls:
+* Which trusted networks will traffic to your cloud environment originate from?
+* Which components in your environment will need network connectivity to other components?
+* Are security groups and network ACLs as specific as possible?
+* Which components will be taking traffic from the internet?
+* How is access to servers managed?
+* Have outbound traffic needs been identified?
+
+### Techniques to Provide Secure Access to Servers
+#### Deploy Immutable Instances
+* Prevent unauthorized access through deploying servers as immutable components.
+* Immutable instances are launched from virtual machine images that are created in a private environment. The images have 
+  ideally gone through security patching and hardening, custom configuration, application code deployment, and vulnerability 
+  scanning.
+* When it’s time to update the application, a new image is created and deployed and the old instance is then deprovisioned.
+* During this cycle no individual ever needs to login to the instance.
+* This is a huge step in the right direction in protecting instances from security breaches and unauthorized access.
+![image](https://user-images.githubusercontent.com/13011167/84762969-1f901b00-afe9-11ea-9d02-c699df4c71fd.png)
+
+#### Configuration Management Tools
+Use a configuration management tool to enforce hardening and configuration policies. Even in the event that someone deployed 
+an instance with insecure configuration, the configuration management tool would override this by applying the correct 
+configuration. Some popular tools with this regard are ansible, chef and puppet.
+![image](https://user-images.githubusercontent.com/13011167/84763156-641bb680-afe9-11ea-9181-9035e39d0bc9.png)
+
+#### Privileged Access Management Tools
+The use of a Privileged Access Management (PAM) tool can provide additional benefits such as:
+* time based or temporary access to elevated privileges
+* granular privilege management
+* session recording and audit trails
+* password and secrets management
+* multi factor authentication
+
+#### CONTROL TRAFFIC - INGRESS AND EGRESS
+* Ingress can be required to access services and resources that are running in our cloud environment. In-bound network traffic 
+  that is entering your cloud environment from the outside.
+* We also need to be able to access the internet or other external networks for our applications to be able to function. Out-
+  bound network traffic that is leaving your cloud environment.
+* Ingress traffic can be controlled and restricted using network ACLs, security groups, which are both effective firewalls, 
+  routing rules, and host based endpoint security tools which oftentimes contain firewall capabilities.
+* In addition to the configuration of ACLs and security groups, private access to VPC networks is also required, either from 
+  user work locations or from corporate-owned network spaces.
+* Egress traffic in AWS is generally handled using internet gateways and nat gateways. As with ingress traffic, egress traffic 
+  should also be controlled and restricted for a number of reasons.
+
+#### Egress Control - Using NACLs and security groups to restrict internet bound traffic to specific entities is not the best 
+approach.
+* AWS provides a few different conduits for connecting to internet sites from our VPC subnets:
+  * Resources deployed in a subnet can be assigned to public IP addresses and will have internet bound traffic routed through 
+    an "internet gateway".
+  * A NAT instance or NAT gateway can be deployed in public subnets so that instances in other subnets can use this device to 
+    gain access to the internet.
+* From a security perspective, it is not practical to deploy all application resources that require internet connectivity into 
+  a public subnet. This widens the attack surface and leaves the environment open to exploitation.
+* To solve this, a device such as the NAT gateway is the most common solution.
+* The shortfall with the NAT gateway solution from a security perspective is that it is difficult to monitor and restrict 
+  traffic at the application layer to specific domains and sites. 
+
+#### Securing Egress Traffic
+* Set Up a Web Proxy Layer: This is the simplest way to log application internet traffic. Proxies can also be used to restrict 
+  traffic to allowed sites. There are a few drawbacks:
+  * Additional Configuration: applications and instances that require internet access will need to be configured to make use 
+    of an http proxy.
+  * The proxy farm itself will need to be configured, managed and maintained.
+* In-Line Gateway Appliance: These appliances generally come from commercial vendors and provide a range of capabilities for 
+  controlling and inspecting outbound traffic out of the box. Cost is the biggest barrier to this approach.
+* Host-Based IDS: A host-based IDS is an agent based solution that runs on each instance. Providing many of the capabilities 
+  that the in-line gateway appliance provides including egress control and data loss prevention, intrusion detection and 
+  prevention. The biggest disadvantage is enforcing that all hosts in your environment have the agent running.
+* EGRESS CONTROL : https://aws.amazon.com/answers/networking/controlling-vpc-egress-traffic/
+
+ #### Access to Cloud Networks - Methods for Establishing Network Access to Resources Running in your Cloud Environments:
+ * Bastion Hosts: Bastion hosts, or jump hosts, are set up in a public subnet to allow a user to login from either their home 
+   or office network, and subsequently access or jump to resources in private networks.
+   * Pros: It is a simple and low cost method for getting onto your cloud VPC.
+   * Cons: It needs additional effort to harden the bastion host. It is not scalable for many users, and may not work if 
+     client applications need to be on the user's laptop or desktop. It is a common target for attackers who hope to gain 
+     access to the network by exploiting a vulnerability on the bastion host.
+     ![image](https://user-images.githubusercontent.com/13011167/84803584-d0b1a800-b01f-11ea-986b-c304823136f1.png)
+* Virtual Desktop Solution: Similar to a bastion host, except that each user will get their own virtual bastion.
+  * Pros: It allows users to install their desktop application clients in the cloud environment without having connectivity to 
+    the VPC from their local laptop
+  * Cons: It costs more than a bastion host. Users will not have direct connectivity to any backend services in the VPC.
+    ![image](https://user-images.githubusercontent.com/13011167/84804374-4ddd1d00-b020-11ea-9e0f-7a8b4f8d07ac.png)
+* Client VPN: A client VPN solution allows a user to connect to the cloud VPC using a secure VPN client to establish an 
+  encrypted tunnel.
+  * Pros: Easy to set up. It has the ability to manage many users and roles. It places the user into the VPC so that they may 
+    use client applications on their local host to hit the resources deployed in the VPC.
+  * Cons: It has additional cost as compared to a bastion host. Users may need to install proprietary VPN clients on their 
+    local machines.
+    ![image](https://user-images.githubusercontent.com/13011167/84804504-7fee7f00-b020-11ea-82c7-77e3adb592b6.png)
+* Site-to Site-VPN: We can connect a local trusted network's firewall with the AWS VPN service to establish VPN tunnel 
+  connectivity from the entire local network to the AWS VPC network.
+  * Pros: No need to install any VPN client software on each user's local machine.
+  * Cons: Additional routing and configuration needs to be performed on the local network. It often leads to delays in setup. 
+    No role based routing.
+    ![image](https://user-images.githubusercontent.com/13011167/84804645-b2987780-b020-11ea-926f-648e457c45ae.png)
+* Direct Connect Link: A dedicated link from a corporate office network or co-location datacenter.
+  * Pros: Dedicated bandwidth. It is ideal for hybrid cloud environments.
+  * Cons: Higher costs and require more time to set up. Once set up, if users are not on the corporate LAN, a solution such as 
+    VPN or VDI will still need to be implemented. Generally, it is not an option for small or virtual teams that do not have a      
+    LAN to work out of.
+    ![image](https://user-images.githubusercontent.com/13011167/84804787-e6739d00-b020-11ea-90a7-79ba9689c0e9.png)
+
+## 3. Protecting Data Stored in the Cloud
+Our goal was to minimize the risk of a malicious actor being able to access our networks and servers, invoke the AWS API, and, ultimately, perform destructive or unauthorized actions in our environments.
+
+It is crucial that the data that we are storing in the cloud is encrypted and that the encryption keys are correctly managed! In the event that there were to be a vulnerability to our network or AWS account settings, we want to reduce the risk of data being readable by an unauthorized party.
+![image](https://user-images.githubusercontent.com/13011167/84806088-cba22800-b022-11ea-97b4-2138b2daca94.png)
+
+### DATA ENCRYPTION
+#### S3 Bucket Encryption
+![image](https://user-images.githubusercontent.com/13011167/85027898-11ccc800-b198-11ea-81a9-ef6c044ae64b.png)
+
+#### S3 Bucket Server-Side Encryption: S3 buckets provisioned in AWS support a few different methods of ensuring your data is encrypted when physically being stored on disk.
+* S3-Managed Keys : With this simple option, we can specify that any object written to S3 will be encrypted by S3 and the S3 
+service will manage the encryption keys behind the scenes. It is important to keep in mind that with this option anyone with 
+read access permissions to the bucket and file. Anyone with read permission will be able to make calls to the service to 
+retrieve the file unencrypted.
+* AWS-Managed Master Keys: In this option, the caller will need to specify that KMS will manage encryption keys for the S3 
+service. This provides additional auditability of S3's use of the encryption keys.
+* Customer-Managed Master Keys: Again, the caller will need to specify that KMS will manage encryption keys for the S3 
+service. The caller will also need to specify the key that will be used for encryption. Additionally, the caller needs to have 
+permissions to use the key. This provides additional ability to control and restrict which principals can access or decrypt 
+sensitive dat
+* Customer-Provided Keys:In this case, the customer can provide encryption keys to S3. S3 will perform the encryption on the 
+server without keeping the key itself. The key would then be provided with the request to decrypt the object. With this option 
+the burden of managing the key falls on the customer.
+
+Server-side encryption for AWS services is a very powerful and transparent way to ensure that security best practices are 
+implemented. We have highlighted this with S3, however, other AWS services, for example DynamoDB, also provide this 
+functionality.
+
+#### AWS KEY MANAGEMENT SERVICE (KMS)
+#### 1. AWS-Managed Customer Master Keys: The key is provisioned automatically by KMS when a service such as S3 or EC2 needs   
+  to use KMS to encrypt underlying data. A separate master key would be created for each service that starts using 
+  KMS.Permissions to AWS managed keys are also handled behind the scenes. Any principal or user who has access to a particular 
+  service would inherently have access to any encrypted data that the service had encrypted using the AWS managed keys. This 
+  approach is acceptable if the sole requirement is to ensure that data is encrypted at rest in AWS' data centers.
+* Using an example of a DynamoDB table that has encryption using AWS managed keys, all users or roles in the account that have 
+  read access to the dynamodb table would be able to read data from the table.
+* Limitations With AWS Managed CMKs: The main drawback here is that it does not allow granular and least privileged access to 
+  the keys. It would not be possible to segment and isolate permissions to certain keys and encrypted data. In addition to 
+  this limitation, AWS managed keys are not available for applications to use for client-side encryption since they are only 
+  available for use by AWS services.
+* This approach is also not recommended for accounts where sensitive data is present since in the event of the AWS account or 
+  role compromised for some reason, encrypted data may not be protected.
+  ![image](https://user-images.githubusercontent.com/13011167/85032029-f912e100-b19c-11ea-892d-b30d7ccb1880.png)
+
+#### 2. Customer-Managed Customer Master Keys: The second option is to explicitly provision the keys using KMS. In this case 
+   the user creates and manages permissions to the keys. The main benefit to this approach is that permissions to manage and  
+   use the keys can be explicitly defined and controlled. This allows separation of duties, segmentation of key usage etc. 
+* Again using DynamoDB as an example, we can have much more flexibility to restrict access to data by restricting access to 
+  encryption keys. For example we can have 2 separate master keys, for two different sets of tables or data classifications, 
+  for example non-sensitive and sensitive tables. We can also assign certain IAM roles to be able to use the keys, and other 
+  IAM roles to be able to manage the keys.
+
+#### 3. Bring Your Own Key: When new customer master keys are provisioned in KMS, by default, KMS creates and maintains the 
+key material for you. However, KMS also provides the customer the option of importing their own key material which may be 
+maintained in a key store external to KMS. With this option the customer has full control of the key's lifecycle including 
+expiration, deletion, and rotation.
+
+A potential use case for importing key material may be to maintain backup copies of the key material external to AWS to 
+fulfill disaster recovery requirements. Customers may also find this option useful if they have a desire to use one key 
+management system for cloud and on-premise infrastructure.
+
+
+
+
+
+
+
 ### IMPORTANT LINKS FOR READING
 * Global Infrastructure : https://aws.amazon.com/about-aws/global-infrastructure/
 * Case Studies: https://aws.amazon.com/solutions/case-studies/?customer-references-cards.sort-by=item.additionalFields.publishedDate&customer-references-cards.sort-order=desc
