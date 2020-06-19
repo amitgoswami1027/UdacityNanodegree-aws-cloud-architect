@@ -582,7 +582,7 @@ It is crucial that the data that we are storing in the cloud is encrypted and th
 #### S3 Bucket Encryption
 ![image](https://user-images.githubusercontent.com/13011167/85027898-11ccc800-b198-11ea-81a9-ef6c044ae64b.png)
 
-#### S3 Bucket Server-Side Encryption: S3 buckets provisioned in AWS support a few different methods of ensuring your data is encrypted when physically being stored on disk.
+#### S3 Bucket Server-Side Encryption: S3 buckets provisioned in AWS support a few different methods of ensuring your data is encrypted when physically being stored on disk. 
 * S3-Managed Keys : With this simple option, we can specify that any object written to S3 will be encrypted by S3 and the S3 
 service will manage the encryption keys behind the scenes. It is important to keep in mind that with this option anyone with 
 read access permissions to the bucket and file. Anyone with read permission will be able to make calls to the service to 
@@ -602,7 +602,7 @@ implemented. We have highlighted this with S3, however, other AWS services, for 
 functionality.
 
 #### AWS KEY MANAGEMENT SERVICE (KMS)
-#### 1. AWS-Managed Customer Master Keys: The key is provisioned automatically by KMS when a service such as S3 or EC2 needs   
+#### 1. AWS-Managed Customer Master Keys: (This approach is acceptable if the sole requirement is to ensure that data is encrypted at rest in AWS' data centers). The key is provisioned automatically by KMS when a service such as S3 or EC2 needs   
   to use KMS to encrypt underlying data. A separate master key would be created for each service that starts using 
   KMS.Permissions to AWS managed keys are also handled behind the scenes. Any principal or user who has access to a particular 
   service would inherently have access to any encrypted data that the service had encrypted using the AWS managed keys. This 
@@ -617,13 +617,16 @@ functionality.
   role compromised for some reason, encrypted data may not be protected.
   ![image](https://user-images.githubusercontent.com/13011167/85032029-f912e100-b19c-11ea-892d-b30d7ccb1880.png)
 
-#### 2. Customer-Managed Customer Master Keys: The second option is to explicitly provision the keys using KMS. In this case 
+#### 2. Customer-Managed Customer Master Keys: (The main benefit to this approach is that permissions to manage and use the keys can be explicitly defined and controlled. This allows separation of duties, segmentation of key usage etc.)  The second option is to explicitly provision the keys using KMS. In this case 
    the user creates and manages permissions to the keys. The main benefit to this approach is that permissions to manage and  
    use the keys can be explicitly defined and controlled. This allows separation of duties, segmentation of key usage etc. 
 * Again using DynamoDB as an example, we can have much more flexibility to restrict access to data by restricting access to 
   encryption keys. For example we can have 2 separate master keys, for two different sets of tables or data classifications, 
   for example non-sensitive and sensitive tables. We can also assign certain IAM roles to be able to use the keys, and other 
   IAM roles to be able to manage the keys.
+* This second approach is a good balance between manageability and security, and it will generally provide the capabilities 
+  mandated by most compliance standards.
+* KMS also provides the ability for the user to create master key material outside of AWS and import it into KMS.
 
 #### 3. Bring Your Own Key: When new customer master keys are provisioned in KMS, by default, KMS creates and maintains the 
 key material for you. However, KMS also provides the customer the option of importing their own key material which may be 
@@ -634,10 +637,102 @@ A potential use case for importing key material may be to maintain backup copies
 fulfill disaster recovery requirements. Customers may also find this option useful if they have a desire to use one key 
 management system for cloud and on-premise infrastructure.
 
+### Best Practices for Securing S3: The importance of ensuring that S3 buckets are configured securely can not be understated! The vast majority of cloud data breaches in the last few years were of private data being leaked from S3 buckets.
+Some best practices for Securing S3 include:
+* Use Object Versioning: This makes it difficult for infiltrators to corrupt or delete data.
+* Block Public Access: This lessens the attack surface.
+* Use VPC Endpoints: This allows you to block requests that do not originate from your VPC network.
+* Create S3 Bucket Policies: Use policies to restrict and control access.
+![image](https://user-images.githubusercontent.com/13011167/85141751-e663df00-b264-11ea-806c-34d5fe5959d5.png)
 
+## 4. Defensive Security in the Cloud
+![image](https://user-images.githubusercontent.com/13011167/85145571-60e32d80-b26a-11ea-945b-592c0001ca35.png)
 
+By the end of the lesson you will have a better understanding of:
+* How to identify misconfigurations that can lead to vulnerabilities.
+* How to identify and guard against malicious activity.
+* How to design a deployment pipeline that ensures that security practices are implemented early on.
 
+#### Common Threat Vectors : Let's get a better feel for the common threat vectors that affect cloud environments. I have categorized these into external threats and internal threats.
+#### External Threats: Let us look at the attack surface of a cloud environment from the perspective of an actor who is on the 
+internet and does not have access to the private network space of our cloud environment.
+* Public Facing Web Applications: Attackers will attempt to exploit application related vulnerabilities such as those found in 
+the OWASP top 10. Cloud architects and engineers designing cloud environments need to ensure that any external web 
+applications are defended appropriately. Teams should also perform security and penetration testing on applications to reduce 
+risks prior to deployment.
 
+![image](https://user-images.githubusercontent.com/13011167/85148424-c08f0800-b26d-11ea-9432-d3fdb4aa0283.png)
+* Public Facing Server Infrastructure: Aside from web applications, any other server infrastructure such as bastion hosts, 
+databases, etc are prime targets for attackers. Any resources, such as these, need to have additional hardening and isolation 
+from other internal resources that host sensitive data. At a high level, the use of these types of resources and exposing them 
+to the internet should be avoided, limited, and restricted.
+* The AWS API and Console: Due to the inherent nature of the public cloud being public, access to the AWS API for managing 
+cloud services is public facing. If this access is compromised, an attacker could gain control of your environment and start 
+managing your resources from anywhere!
+![image](https://user-images.githubusercontent.com/13011167/85149155-968a1580-b26e-11ea-841f-39824de6ec13.png)
+
+#### Internal Threats: Although it is important to defend our external public facing perimeter, it is equally important to 
+assume those same threats can potentially exist within the private network. Internal attackers may also have gained access to 
+instances and hosts running in the cloud and will attempt to install and run malware or access data on cloud instances.
+
+The threat is compounded if an attacker or a piece of malicious software has gained network access to other private networks 
+that are connected to your cloud environment. To prevent this, it is critical that cloud hosts are hardened and set up to 
+restrict access even if they are not public facing. The AWS API can also become a target if attackers gain access to internal 
+code repositories that mistakenly hold API keys and other secrets.
+* Identifying Threats and Vulnerabilities: The goal of this entire course is to design cloud architectures so that the 
+likelihood of any of these types of attacks, both external and internal, are reduced or eliminated.
+* OWASP Top 10: A widely accepted set of vulnerabilities which can lead to exploitation of web applications.
+
+![image](https://user-images.githubusercontent.com/13011167/85149994-9b02fe00-b26f-11ea-980f-8c24984b7052.png)
+
+#### Checking Infrastructure as Code for Vulnerabilities
+![image](https://user-images.githubusercontent.com/13011167/85154750-7873e380-b275-11ea-9e30-f79daf0ae61b.png)
+![image](https://user-images.githubusercontent.com/13011167/85154616-4cf0f900-b275-11ea-88df-b6243c28eb1f.png)
+
+### Identifying Vulnerabilities: Monitoring for Vulnerabilities and Misconfigurations in AWS
+* AWS Config: AWS Config collects configuration snapshots of many of the core infrastructure services that AWS provides. When 
+Config is enabled, you will have insight into how a particular resource is configured, when it changed, and what was changed.
+The configuration snapshot serves as an input to rules which evaluate whether the configuration is in compliance or out of 
+compliance with the conditions specified in the rule. It is strongly recommended to setup AWS Config rules for any security or 
+compliance requirements that your organization has.
+* Security HUB is a service within AWS which aggregates findings from other security tools into a single pane of glass. 
+Security monitoring services such as AWS Config, Inspector, GuardDuty, and many open source and commercial tools integrate 
+findings with Security Hub.
+![image](https://user-images.githubusercontent.com/13011167/85160911-ac9ed280-b27c-11ea-96c0-49cf40e20e1f.png)
+* AWS Inspector: AWS inspector is intended to specifically analyze and report on vulnerabilities on EC2 instances. AWS 
+Inspector is designed to identify vulnerabilities at the OS level.Inspector can also provide a report on network reachability 
+the public internet to instances and load balancers along with specific ports that are reachable.Once the inspector agent is installed on an instance, it can scan against:
+   * CIS benchmarks for linux and windows
+   * AWS security best practices
+   * Common vulnerabilities and exposures or CVE findings
+
+#### Security Information and Event Monitoring Sources in AWS
+* CloudTrail: AWS CloudTrail is the source of activity logging within an AWS account. Any API activity, console usage, cross 
+account access etc will be recorded in CloudTrail. CloudTrail will log all activity and allow you to search these logs for 90 
+days.
+   * However it is highly recommended to configure CloudTrail logs in all accounts and all regions to be written to S3 
+     buckets, preferably a central S3 bucket in a dedicated security account. These logs can then be examined later or 
+     ingested by a log analysis or SIEM tool.
+   * CloudTrail is by far the most valuable tool to monitor and audit activity in your AWS account. 
+* VPC Flow Logs: When VPC flow logs provide insight into network activity including:
+    * Connection attempts or rejects, allows or denies
+    * Source and destination IPs, ports
+    * Packets and byte counts
+  * It is important to note that VPC flow logs do not provide visibility into actual traffic content or payload.
+  * If you need visibility into network traffic content in order to perform more sophisticated detection of activity you can 
+    enable VPC traffic mirroring. Once VPC traffic mirroring is enabled, you can ship this data to third party network 
+    monitoring tools
+* S3 Bucket Logs: Any changes to an S3 bucket's configuration will be logged as API calls in CloudTrail.
+  From a security standpoint it is important to be aware of attempts to read or write objects to S3 buckets - especially those 
+  that contain sensitive or critical data. Object level logging is optional and can be enabled either through CloudTrail or 
+  the S3 bucket's settings. All calls to read or write data will appear in CloudTrail.
+* AWS Config logs: Config logs record all state changes for any resources that are being monitored by AWS Config. These logs 
+  should be sent to a log analysis tool to gain deeper visibility into configuration state changes.
+* DNS logs: DNS query logging is also available in AWS Route53. Regardless of your choice to enable DNS query logging, AWS 
+  does maintain these logs behind the scenes and will use them for identifying suspicious activity.
+* EC2 Instance Server Logs: System logs from your Linux and Windows instances are also critical to identifying suspicious 
+  activity or auditing. These logs can be sent to cloudwatch logs or other log analysis tools or products that provide 
+  intrusion detection and dynamic host based security event monitoring.
 
 
 ### IMPORTANT LINKS FOR READING
