@@ -1,7 +1,6 @@
+## AWS ARCHITECT NANODEGREE - PROJECT#3 (MYNOTES & REFERENCE FOR REVIEWER)
 # Cloud Security - Secure the Recipe Vault Web Application
- 
 In this project, you will:
- 
 * Deploy and assess a simple web application environment’s security posture
 * Test the security of the environment by simulating attack scenarios and exploiting cloud configuration vulnerabilities
 * Implement monitoring to identify insecure configurations and malicious activity 
@@ -9,40 +8,28 @@ In this project, you will:
 * Design a DevSecOps pipeline
  
 ## Dependencies and Prerequisites
- 
-### Access to AWS account  
+### Access to AWS account [Done]  
 Students will need to use their personal AWS accounts.  Udacity will provide a $100 credit for any usage costs. If project instructions are followed we do not anticipate usage costs to exceed this amount.
  
-### Installation of the AWS CLI and Local Setup of AWS API keys
+### Installation of the AWS CLI and Local Setup of AWS API keys [Done]
 Instructions and examples in this project will make use of the AWS CLI in order to automate and reduce time and complexity.
 Refer to the below links to get the AWS CLI installed and configured in your local environment.
  
 [Installing the CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
- 
 [Configuring the CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
  
-### Local setup of git and GitHub Repository
+### Local setup of git and GitHub Repository 
 You will need to clone or download [this GitHub repo](https://github.com/udacity/nd063-c3-design-for-security-project-starter) in order to work on and submit this project.
 
-## Exercise 1 - Deploy Project Environment
- 
+## Exercise 1 - Deploy Project Environment [Done]
 **_Deliverables for Exercise 1:_**
 * **E1T4.txt** - Text file identifying 2 poor security practices with justification. 
- Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security.  Include justification.
-
-The Web Service Instance is in the public subnet, has port 5000 open to the internet, and no HTTPS port 443 open.
-Instead, the instance should be in the private subnet in order not to be exposed to the internet, use port 443 instead of port 80, and only allow communication on port 5000 from the AppLoadBalancerSG.
-The DefaultPrivateRoute1 and DefaultPrivateRoute2 tables have DestinationCidrBlock: 0.0.0.0/0
-That means if a resource within the private subnets gets under malicious control, it could communicate with any endpoint on the internet.
-
-The InstanceRolePolicy-C3 for the IAM InstanceRole allows for S3 actions on any resource.
-That means the IAM role could be used to access and change content in any S3 bucket in the AWS account.
 ### Task 1:  Review Architecture Diagram
 In this task, the objective is to familiarize yourself with the starting architecture diagram. An architecture diagram has been provided which reflects the resources that will be deployed in your AWS account.
  
 The diagram file, title `AWS-WebServiceDiagram-v1-insecure.png`, can be found in the _starter_ directory in this repo.
  
-![base environment](AWS-WebServiceDiagram-v1-insecure.png)
+![base environment](snapshots/AWS-WebServiceDiagram-v1-insecure.png)
  
 #### Expected user flow:
 - Clients will invoke a public-facing web service to pull free recipes.  
@@ -54,9 +41,24 @@ The diagram file, title `AWS-WebServiceDiagram-v1-insecure.png`, can be found in
 #### Attack flow:
 - Scripts simulating an attack will be run from a separate instance which is in an un-trusted subnet.
 - The scripts will attempt to break into the web application instance using the public IP and attempt to access data in the secret recipe S3 bucket.
+#### Task-01:SOLUTION : Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security.  Include justification.
 
+```diff 
+! Poor practice 1
++ Why Web Service Instance is in the public subnet(10.192.10.0/24)?Instead it should be in the private subnet(10.192.20.0/24).
++ Web Service should be hosted on private subnet and it will provide additional security. Also communication
++ channel between AppLoadBalancer and Web Service should be secure. I would prefer HTTPS commuication and + + will open the port 443 for ApploadBalancer. 
++ Security Group can be edited to accept traffic from + + ApploadBalancer only.
 
-### Task 2: Review CloudFormation Template
+! Poor practice 2
++ Web Service for the purpose of retrieving the reciepies from S3 make use of Internet Gateway instead of using the role based methods to access the services within the AWS Infrastrcuture. 
++ The DefaultPrivateRoute1 and DefaultPrivateRoute2 tables have DestinationCidrBlock: 0.0.0.0/0
++ That means if a resource within the private subnets gets under malicious control, it could communicate with + any endpoint on the internet.
++ The InstanceRolePolicy-C3 for the IAM InstanceRole allows for S3 actions on any resource.
++ That means the IAM role could be used to access and change content in any S3 bucket in the AWS account.
+
+```
+### Task 2: Review CloudFormation Template [Done]
 In this task, the objective is to familiarize yourself with the starter code and to get you up and running quickly. Spend a few minutes going through the .yml files in the _starter_ folder to get a feel for how parts of the code will map to the components in the architecture diagram. 
  
 Additionally, we have provided a CloudFormation template which will deploy the following resources in AWS:
@@ -73,23 +75,24 @@ Additionally, we have provided a CloudFormation template which will deploy the f
 * Application LoadBalancer
 * Security groups
 * IAM role
- 
-### Task 3: Deployment of Initial Infrastructure
+#### Task-02:SOLUTION :
+```diff 
+! Reviewed the .yml files
++ Reviewed the cloudformation template to deploy the AWS resources as per the given architecture
+```
+
+### Task 3: Deployment of Initial Infrastructure [Done]
 In this task, the objective is to deploy the CloudFormation stacks that will create the below environment.
- 
-![base environment](AWS-WebServiceDiagram-v1-insecure.png)
- 
+ ![base environment](snapshots/AWS-WebServiceDiagram-v1-insecure.png)
  
 We will utilize the AWS CLI in this guide, however you are welcome to use the AWS console to deploy the CloudFormation templates.
  
- 
 #### 1. From the root directory of the repository - execute the below command to deploy the templates.
- 
-##### Deploy the S3 buckets
+##### Deploy the S3 buckets - c3-s3-goswami
 ```
-aws cloudformation create-stack --region us-east-1 --stack-name c3-s3 --template-body file://starter/c3-s3.yml
+aws cloudformation create-stack --region us-east-1 --stack-name c3-s3-goswami --template-body file://starter/c3-s3.yml
++ Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-s3-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-s3.yml
 ```
- 
 Expected example output:
 ```
 {
@@ -99,6 +102,7 @@ Expected example output:
 ##### Deploy the VPC and Subnets
 ```
 aws cloudformation create-stack --region us-east-1 --stack-name c3-vpc --template-body file://starter/c3-vpc.yml
++ Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-vpc-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-vpc.yml
 ```
  
 Expected example output:
@@ -112,6 +116,8 @@ Expected example output:
 You will need to specify a pre-existing key-pair name.
 ```
 aws cloudformation create-stack --region us-east-1 --stack-name c3-app --template-body file://starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=<add your key pair name here> --capabilities CAPABILITY_IAM
+
++ Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-app-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=architect --capabilities CAPABILITY_IAM
 ```
  
 Expected example output:
@@ -120,57 +126,55 @@ Expected example output:
     "StackId": "arn:aws:cloudformation:us-east-1:4363053XXXXXX:stack/c3-app/70dfd370-2118-11ea-aea4-12d607a4fd1c"
 }
 ```
- 
 Expected example AWS Console status: 
 https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks
- 
-![Expected AWS Console Status](cloudformation_status.png)
- 
+
+![Expected AWS Console Status](snapshots/goswami_cloudformation_status.png)
+
 #### 2. Once you see Status is CREATE_COMPLETE for all 3 stacks, obtain the required parameters needed for the project.
- 
 Obtain the name of the S3 bucket by navigating to the Outputs section of the stack:
  
-![Outputs Section](s3stack_output.png)
+![Outputs Section](snapshots/goswami_s3stack_output.png)
  
 Note down the names of the two other buckets that have been created, one for free recipes and one for secret recipes.  You will need the bucket names to upload example recipe data to the buckets and to run the attack scripts.
  
-- You will need the Application Load Balancer endpoint to test the web service - ApplicationURL
-- You will need the web application EC2 instance public IP address to simulate the attack - ApplicationInstanceIP
-- You will need the public IP address of the attack instance from which to run the attack scripts - AttackInstanceIP
+- You will need the Application Load Balancer endpoint to test the web service - ApplicationURL(c1-web-service-alb-1429350102.us-east-1.elb.amazonaws.com)
+- You will need the web application EC2 instance public IP address to simulate the attack - ApplicationInstanceIP(ec2-34-193-227-62.compute-1.amazonaws.com)
+- You will need the public IP address of the attack instance from which to run the attack scripts - AttackInstanceIP(ec2-3-235-107-224.compute-1.amazonaws.com)
  
 You can get these from the Outputs section of the **c3-app** stack.
  
-![Outputs](outputs.png)
+![Outputs](snapshots/goswami_outputs.png)
  
 #### 3.  Upload data to S3 buckets
 Upload the free recipes to the free recipe S3 bucket from step 2. Do this by typing this command into the console (you will replace `<BucketNameRecipesFree>` with your bucket name):
  
 Example:  
 ```
-aws s3 cp free_recipe.txt s3://<BucketNameRecipesFree>/ --region us-east-1
+aws s3 cp free_recipe.txt s3://cand-c3-free-recipes-914415844393/ --region us-east-1
 ```
- 
 Upload the secret recipes to the secret recipe S3 bucket from step 2. Do this by typing this command into the console (you will replace `<BucketNameRecipesSecret>` with your bucket name):
  
 Example:  
 ```
-aws s3 cp secret_recipe.txt s3://<BucketNameRecipesSecret>/ --region us-east-1
+aws s3 cp secret_recipe.txt s3://cand-c3-secret-recipes-914415844393/ --region us-east-1
 ```
  
 #### 4. Test the application
 Invoke the web service using the application load balancer URL:
 ```
 http://<ApplicationURL>/free_recipe
+http://c1-web-service-alb-1429350102.us-east-1.elb.amazonaws.com/free_recipe
+
 ```
 You should receive a recipe for banana bread.
+The AMIs specified in the cloud formation template exist in the us-east-1 (N. Virginia) region. You will need to set this as your default region when deploying resources for this project. 
+![goswami_test_application_url](snapshots/goswami_test_application_url.png)
 
-The AMIs specified in the cloud formation template exist in the us-east-1 (N. Virginia) region. You will need to set this as your default region when deploying resources for this project.
- 
 ### Task 4:  Identify Bad Practices
- 
 Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security. List these 2 practices, and a justification for your choices, in the text file named E1T4.txt.
  
-**Deliverables:** 
+**Deliverables:**  [Done] - Enclosed the file in the Project03_Deliveriables for details.
 - **E1T4.txt** - Text file identifying 2 poor security practices with justification. 
  
 ## Exercise 2: Enable Security Monitoring
