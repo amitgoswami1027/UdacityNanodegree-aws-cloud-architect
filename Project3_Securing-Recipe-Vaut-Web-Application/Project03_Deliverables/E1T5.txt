@@ -1,0 +1,16 @@
+Name: Amit Goswami
+Course : AWS Cloud Architect Nanodegree
+
+Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security.  Include justification.
+
+# Poor practice 1
++ Why Web Service Instance is in the public subnet(10.192.10.0/24)?Instead it should be in the private subnet(10.192.20.0/24).
++ Web Service should be hosted on private subnet and it will provide additional security. Also communication
++ channel between AppLoadBalancer and Web Service should be secure. I would prefer HTTPS commuication and + + will open the port 443 for ApploadBalancer. Security Group can be edited to accept traffic from + + ApploadBalancer only.
+
+# Poor practice 2
++ Web Service for the purpose of retrieving the reciepies from S3 make use of Internet Gateway instead of using the role based methods to access the services within the AWS Infrastrcuture. 
++ The DefaultPrivateRoute1 and DefaultPrivateRoute2 tables have DestinationCidrBlock: 0.0.0.0/0
++ That means if a resource within the private subnets gets under malicious control, it could communicate with + any endpoint on the internet.
++ The InstanceRolePolicy-C3 for the IAM InstanceRole allows for S3 actions on any resource.
++ That means the IAM role could be used to access and change content in any S3 bucket in the AWS account.
