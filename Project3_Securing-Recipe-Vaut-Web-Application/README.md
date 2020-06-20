@@ -89,7 +89,7 @@ We will utilize the AWS CLI in this guide, however you are welcome to use the AW
  
 #### 1. From the root directory of the repository - execute the below command to deploy the templates.
 ##### Deploy the S3 buckets - c3-s3-goswami
-```
+```diff
 aws cloudformation create-stack --region us-east-1 --stack-name c3-s3-goswami --template-body file://starter/c3-s3.yml
 + Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-s3-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-s3.yml
 ```
@@ -100,7 +100,7 @@ Expected example output:
 }
 ```
 ##### Deploy the VPC and Subnets
-```
+```diff
 aws cloudformation create-stack --region us-east-1 --stack-name c3-vpc --template-body file://starter/c3-vpc.yml
 + Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-vpc-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-vpc.yml
 ```
@@ -114,7 +114,7 @@ Expected example output:
  
 ##### Deploy the Application Stack 
 You will need to specify a pre-existing key-pair name.
-```
+```diff
 aws cloudformation create-stack --region us-east-1 --stack-name c3-app --template-body file://starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=<add your key pair name here> --capabilities CAPABILITY_IAM
 
 + Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-app-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=architect --capabilities CAPABILITY_IAM
@@ -126,8 +126,7 @@ Expected example output:
     "StackId": "arn:aws:cloudformation:us-east-1:4363053XXXXXX:stack/c3-app/70dfd370-2118-11ea-aea4-12d607a4fd1c"
 }
 ```
-Expected example AWS Console status: 
-https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks
+Expected example AWS Console status: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks
 
 ![Expected AWS Console Status](snapshots/goswami_cloudformation_status.png)
 
@@ -144,7 +143,7 @@ Note down the names of the two other buckets that have been created, one for fre
  
 You can get these from the Outputs section of the **c3-app** stack.
  
-![Outputs](snapshots/goswami_outputs.png)
+![Outputs](snapshots/goswami_output.png)
  
 #### 3.  Upload data to S3 buckets
 Upload the free recipes to the free recipe S3 bucket from step 2. Do this by typing this command into the console (you will replace `<BucketNameRecipesFree>` with your bucket name):
@@ -162,9 +161,9 @@ aws s3 cp secret_recipe.txt s3://cand-c3-secret-recipes-914415844393/ --region u
  
 #### 4. Test the application
 Invoke the web service using the application load balancer URL:
-```
+```diff
 http://<ApplicationURL>/free_recipe
-http://c1-web-service-alb-1429350102.us-east-1.elb.amazonaws.com/free_recipe
++ http://c1-web-service-alb-1429350102.us-east-1.elb.amazonaws.com/free_recipe
 
 ```
 You should receive a recipe for banana bread.
