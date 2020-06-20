@@ -128,7 +128,7 @@ Expected example output:
 ```
 Expected example AWS Console status: https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks
 
-![Expected AWS Console Status](snapshots/goswami_cloudformation_status.png)
+![Expected AWS Console Status](snapshots/cloudformation_status.png)
 
 #### 2. Once you see Status is CREATE_COMPLETE for all 3 stacks, obtain the required parameters needed for the project.
 Obtain the name of the S3 bucket by navigating to the Outputs section of the stack:
