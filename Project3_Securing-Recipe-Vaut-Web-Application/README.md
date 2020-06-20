@@ -28,7 +28,15 @@ You will need to clone or download [this GitHub repo](https://github.com/udacity
  
 **_Deliverables for Exercise 1:_**
 * **E1T4.txt** - Text file identifying 2 poor security practices with justification. 
- 
+ Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security.  Include justification.
+
+The Web Service Instance is in the public subnet, has port 5000 open to the internet, and no HTTPS port 443 open.
+Instead, the instance should be in the private subnet in order not to be exposed to the internet, use port 443 instead of port 80, and only allow communication on port 5000 from the AppLoadBalancerSG.
+The DefaultPrivateRoute1 and DefaultPrivateRoute2 tables have DestinationCidrBlock: 0.0.0.0/0
+That means if a resource within the private subnets gets under malicious control, it could communicate with any endpoint on the internet.
+
+The InstanceRolePolicy-C3 for the IAM InstanceRole allows for S3 actions on any resource.
+That means the IAM role could be used to access and change content in any S3 bucket in the AWS account.
 ### Task 1:  Review Architecture Diagram
 In this task, the objective is to familiarize yourself with the starting architecture diagram. An architecture diagram has been provided which reflects the resources that will be deployed in your AWS account.
  
@@ -46,7 +54,8 @@ The diagram file, title `AWS-WebServiceDiagram-v1-insecure.png`, can be found in
 #### Attack flow:
 - Scripts simulating an attack will be run from a separate instance which is in an un-trusted subnet.
 - The scripts will attempt to break into the web application instance using the public IP and attempt to access data in the secret recipe S3 bucket.
- 
+
+
 ### Task 2: Review CloudFormation Template
 In this task, the objective is to familiarize yourself with the starter code and to get you up and running quickly. Spend a few minutes going through the .yml files in the _starter_ folder to get a feel for how parts of the code will map to the components in the architecture diagram. 
  
