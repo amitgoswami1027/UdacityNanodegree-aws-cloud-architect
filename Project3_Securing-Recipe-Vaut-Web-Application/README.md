@@ -453,6 +453,9 @@ Capture the screenshot of the secret recipes bucket showing that default encrypt
 - **E4T3_securityhub.png** - Screenshot of Security Hub after reevaluating the number of findings.
 - **E4T3_config.png** - Screenshot of Config after reevaluating the number of findings.
 - **E4T3_inspector.png** - Screenshot of Inspector after reevaluating the number of findings.
+![E4T3_securityhub](Project03_Deliverables/E4T3_securityhub.png)
+![E4T3_config](Project03_Deliverables/E4T3_config.png)
+![E4T3_inspector](Project03_Deliverables/E4T3_inspector.png)
 
 ### Task 4: Questions and Analysis
 1. What additional architectural change can be made to reduce the internet-facing attack surface of the web application instance.
@@ -461,12 +464,33 @@ Capture the screenshot of the secret recipes bucket showing that default encrypt
 4. The changes you made above were done through the console or CLI; describe the outcome if the original cloud formation templates are applied to this environment?
 
 Submit your answers in E4T4.txt.
-
-**Deliverables**:
+**Deliverables**: [Done]
 - **E4T4.txt** - Answers from prompts in Exercise 4, Task 4.
+```diff
+! Problem-01: # What additional architectural change can be made to reduce the internet facing attack surface of the web application instance.
++ Solution-01:
++ 1. We should block SSH logon to all EC2 instances and disable SSH logon altogether.
++ 2. We should all ports to the internet opened for all EC2 instances. Important internal access can only be allowed thorugh different Security groups as per the requirement of 
+the project architecture.
 
+! Problem-02: # Assuming the IAM permissions for the S3 bucket are still insecure, would creating VPC private endpoints for S3 prevent the unauthorized access to the secrets 
+bucket.
++ Solution-02:
++ Creating VPC private endpoints would help to make the network communication faster and cheaper as data travel only within the AWS network and it does not require to make use 
++ of the internet gateway to route though the private IP. 
++ As per the current project architecture, secert recepies need to be accessed from the public network so short answer would be "NO".
+
+! Problem-03: # Will applying default encryption setting to the s3 buckets encrypt the data that already exists?
++ Solution-03:
++ No, applying the default encryption to the S# bucket will not encrypt the alreadly present information in the S3 bucket.It can only encrypt the new objects added to the S3 
+bucket.
+
+! Problem-04: # What would happen if the original cloud formation templates are applied to this environment.
++ Solution-04: Cloud formation will over right all the changes and project architecture would be back to the original state. Only solution is to do the necessary changes in the 
+"cloud formation" templates if we want to persist the code changes.
+
+```
 ###  _Optional Standout Suggestion_ Task 5 - Additional Hardening
-
 Make changes to the environment by updating the cloud formation template. You would do this by copying c3-app.yml and c3-s3.yml and putting your new code into c3-app_solution.yml and c3-s3_solution.yml.
 Brainstorm and list additional hardening suggestions aside from those implemented that would protect the data in this environment. Submit your answers in E4T5.txt.
 
@@ -475,7 +499,6 @@ Brainstorm and list additional hardening suggestions aside from those implemente
 - _Optional_ **E4T5.txt** - Additional hardening suggestions from Exercise 4, Task 5.
 
 ## Exercise 5 - Designing a DevSecOps Pipeline
-
 Take a look at a very common deployment pipeline diagrammed below:
 
 ![DevOpsPipeline](DevOpsPipeline.png)
