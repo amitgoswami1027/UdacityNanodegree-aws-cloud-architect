@@ -1,10 +1,14 @@
 Name : Amit Goswami
 Course: AWS Architect Nanodegree
 
-# Identify 2-3 changes that can be made to our environment to prevent an ssh brute force attack from the internet.
-Change the SSH port.
-Disable SSH login with password.
-Disable the SSH agent altogether.
+Problem: # Identify 2-3 changes that can be made to our environment to prevent an ssh brute force attack from the internet.
+Solution:
+1. SSH port should not be open to all 0.0.0.0/0. If we can restrict the SSH port so that outside entity should not be able to connect to the instance over SSH, it will help to 
+make our EC2 instances secure.
+2. Security Group need to be changed and should only allow restricted access as per the least privilage policy.
+3. Disable SSH password login on the application server instance.
 
-# Neither instance should have had access to the secret recipes bucket, in the even that instance API credentials were compromised how could we have prevented access to sensitive data.
-By means of restricting the security policy of the instances to only be able to access the S3 bucket with Free Recipes.
+Problem: # Neither instance should have had access to the secret recipes bucket, in the even that instance API credentials were compromised how could we have prevented access 
+to sensitive data.
+Solutions:
+Need to follow the least privilage policy. Security groups need to be fine tuned to be able to access the S3 buckets with Free Recipes.
