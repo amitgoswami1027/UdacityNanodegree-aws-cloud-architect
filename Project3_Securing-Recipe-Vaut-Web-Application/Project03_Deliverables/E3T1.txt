@@ -1,0 +1,13 @@
+Name : Amit Goswami
+Course : AWS Cloud Architect Nanodegree
+
+# Describe GuardDuty findings that were detected related to the brute force attack
+Message:
+i-0cbd0238825ee015e is performing SSH brute force attacks against 10.192.10.51. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.
+
+# Research the AWS Guard Duty documentation page and explain how GuardDuty may have detected this attack - i.e. what was its source of information.
+Amazon GuardDuty : 
+1. Protect your AWS accounts and workloads with intelligent threat detection and continuous monitoring.It is a threat detection service that continuously monitors for malacious or unauthrorized behaviour to protect your AWS accounts and workloads. 
+2. With GuardDuty, we cna have an intelligent and cost-effective option for continuous threat detection in the AWS Cloud. The service uses machine learning, anomaly detection, and integrated threat intelligence to identify and prioritize potential threats. 
+3. GuardDuty analyzes tens of billions of events across multiple AWS data sources, such as AWS CloudTrail, Amazon VPC Flow Logs, and DNS logs and captured information aboit IP traffic going to and from EC2 network interfaces in VPC.
+4. GuardDuty alerts are actionable, easy to aggregate across multiple accounts, and straightforward to push into existing event management and workflow systems.

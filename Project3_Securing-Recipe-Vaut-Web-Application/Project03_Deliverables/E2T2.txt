@@ -1,0 +1,31 @@
+Name: Amit Goswami
+Course: AWS Architect NanoDegree
+
+Research and analyze which of the vulnerabilities appear to be related to the code that was deployed for the environment in this project.
+
+Security Hub Highlight some of the following top security vulnerabilities:
+HIGH
+2.1 Ensure CloudTrail is enabled in all regions
+CloudTrail.1 CloudTrail should be enabled and configured with at least one multi-region trail
+4.2 Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389
+4.1 Ensure no security groups allow ingress from 0.0.0.0/0 to port 22
+
+MEDIUM
+IAM.7 Password policies for IAM users should have strong configurations
+2.9 Ensure VPC flow logging is enabled in all VPCs
+IAM.5 MFA should be enabled for all IAM users that have console password
+ELBv2.1 Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
+SSM.1 EC2 instances should be managed by AWS Systems Manager
+S3.4 S3 buckets should have server-side encryption enabled
+
+LOW
+API EnableSecurityHub was invoked using root credentials.
+
+Bonus - provide recommendations on how to remediate the vulnerabilities.
+1. Setting the appropiate IAM policy, do not use root user, create a child user and set the IAM policices for not allowing root user.
+2. Streamling the network communication between the entities by redirecting HTTP to HTTPS requests.
+3. Security Groups should be streamline and should not allow everything. 
+4. EC2 instance security groups should be alligned to only allow traffic from the specific entities as required.
+5. Enable VPC Flowlogs and s3 Bucket logging.
+6. TCP port 5000 is reachable from the internet on the EC2 instance.
+

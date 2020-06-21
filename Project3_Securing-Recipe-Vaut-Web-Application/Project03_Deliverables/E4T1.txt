@@ -1,0 +1,10 @@
+Name : Amit Goswami
+Course: AWS Architect Nanodegree
+
+# Identify 2-3 changes that can be made to our environment to prevent an ssh brute force attack from the internet.
+Change the SSH port.
+Disable SSH login with password.
+Disable the SSH agent altogether.
+
+# Neither instance should have had access to the secret recipes bucket, in the even that instance API credentials were compromised how could we have prevented access to sensitive data.
+By means of restricting the security policy of the instances to only be able to access the S3 bucket with Free Recipes.
