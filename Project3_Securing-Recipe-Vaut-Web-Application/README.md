@@ -190,7 +190,7 @@ First, we will set up security monitoring to ensure that the AWS account and env
  
 #### 1. Enable AWS Config (skip this step if you already have it enabled)  
  a. See below screenshot for the initial settings.   
- ![ConfigEnabled](config_enable.png)  
+ ![ConfigEnabled](starter/config_enable.png)  
  b. On the Rules page, click **Skip**.  
  c. On the Review page, click **Confirm**.
 #### 2. Enable AWS Security Hub
@@ -198,12 +198,12 @@ First, we will set up security monitoring to ensure that the AWS account and env
 b. On the next page, click **Enable Security Hub**
 #### 3. Enable AWS Inspector scan
  a. From the Inspector service landing page, leave the defaults and click **Advanced**.  
- ![Inspector1](inspector_setup_runonce.png)  
+ ![Inspector1](starter/inspector_setup_runonce.png)  
  b. Uncheck **All Instances** and **Install Agents**.  
  c. Choose Name for Key and ‘Web Services Instance - C3’ for value, click **Next**.  
- ![Inspector2](inspector_setup_2.png)  
+ ![Inspector2](starter/inspector_setup_2.png)  
  d. Edit the rules packages as seen in the screenshot below.  
- ![Inspector3](inspector_setup_3.png)  
+ ![Inspector3](starter/inspector_setup_3.png)  
  e. Uncheck **Assessment Schedule**.  
  f. Set a duration of 15 minutes.
  g. Click **Next** and **Create**.
@@ -259,7 +259,6 @@ Security Hub Highlight some of the following top security vulnerabilities:
 + 6. TCP port 5000 is reachable from the internet on the EC2 instance. 
 ``` 
 ## Exercise 3 - Attack Simulation
- 
 Now you will run scripts that will simulate the following attack conditions:
 Making an SSH connection to the application server using brute force password cracking.
 Capturing secret recipe files from the s3 bucket using stolen API keys.
@@ -332,7 +331,7 @@ cat secret_recipe.txt
 ```
 Take a screenshot showing the breach:
 E3T2_s3breach.png
-![E3T2_s3breach](snapshots/E3T2_s3breach.png)
+![E3T2_s3breach](Project03_Deliverables/E3T2_s3breach.png)
 
 _Optional Stand Out Suggestion_ Task 3:
 Choose one of the application vulnerability attacks outlined in the OWASP top 10 (e.g. SQL injection, cross-site scripting)
