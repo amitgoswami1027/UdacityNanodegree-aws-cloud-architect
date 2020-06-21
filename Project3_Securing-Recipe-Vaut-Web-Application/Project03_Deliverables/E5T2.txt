@@ -15,4 +15,4 @@ Solution: SSH root access with password logon.
 
 3. ##Scan an AWS environment for cloud configuration vulnerabilities
 Solution: AWS Config 
-### Example vulnerability
+

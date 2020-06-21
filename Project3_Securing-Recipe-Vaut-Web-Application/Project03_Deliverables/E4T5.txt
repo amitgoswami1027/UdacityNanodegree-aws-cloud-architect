@@ -1,0 +1,15 @@
+Name: Amit Goswami
+Course: AWS Architect Nanodegree
+
+Optional Standout Suggestion Task 5 - Additional Hardening
+Question-01:
+Make changes to the environment by updating the cloud formation template. You would do this by copying c3-app.yml and c3-s3.yml and putting your new code into c3-app_solution.yml and c3-s3_solution.yml. 
+Solution: Enclosed the modified files.
+
+Question-02:
+Brainstorm and list additional hardening suggestions aside from those implemented that would protect the data in this environment. Submit your answers in E4T5.
+Solution:
+1. Applying the least privilage to the resoruces. Changing the instance role to specific role to only read the reciepies.
+2. Streamline the Security Groups to only align the traffic from specific subnets or hosts. Modifying the rules to restrict the SSH at port 22 and only opening the port 5000 for traffic from specifc host to make it more secure.
+3. S3 bucket - enable encription, so that even if the attacker able to reach S3 - data will be protected. Only caveat is that the existing data in the bucket before the encryption is enabled will not be encrypted.
+
