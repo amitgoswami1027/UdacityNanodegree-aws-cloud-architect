@@ -117,7 +117,7 @@ You will need to specify a pre-existing key-pair name.
 ```diff
 aws cloudformation create-stack --region us-east-1 --stack-name c3-app --template-body file://starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=<add your key pair name here> --capabilities CAPABILITY_IAM
 
-+ Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-app-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=architect --capabilities CAPABILITY_IAM
++ Command: aws cloudformation create-stack --region us-east-1 --stack-name c3-app-goswami --template-body file://E:/'Amit Goswami'/Nanodegree-aws_architect/Project3_Securing-Recipe-Vaut-Web-Application/starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=awsnanodegree --capabilities CAPABILITY_IAM
 ```
  
 Expected example output:
@@ -279,25 +279,36 @@ The above instructions are for macOS X users.  For further guidance and other op
  
 #### 1. Log in to the attack simulation server using your SSH key pair.
 #### 2. Run the below commands to start a brute force attack against the application server.  You will need the application server hostname for this.
-```
+```diff
 date
 hydra -l ubuntu -P rockyou.txt ssh://<YourApplicationServerDnsNameHere>
++ hydra -l ubuntu -P rockyou.txt ssh://ec2-54-227-86-147.compute-1.amazonaws.com
 ```
- 
-You should see output similar to the following:
-		
-![Brute Force](brute_force.png)
+You should see output similar to the following(My Snapshot after running above command):
+![Brute Force](snapshots/goswami_brute_force.png)
  
 Wait 10 - 15 minutes and check AWS Guard Duty.
  
 #### 3. Answer the following questions:
 1. What findings were detected related to the brute force attack?
-2. Take a screenshot of the Guard Duty findings specific to the attack. Title this screenshot E3T1_guardduty.png.
+#### i-0cbd0238825ee015e is performing SSH brute force attacks against 10.192.10.51. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.
+2. Take a screenshot of the Guard Duty findings specific to the attack. Title this screenshot E3T1_guardduty.png.[Done]
 3. Research the AWS Guard Duty documentation page and explain how GuardDuty may have detected this attack - i.e. what was its source of information?
+```diff
++ Amazon GuardDuty : 
++ 1. Protect your AWS accounts and workloads with intelligent threat detection and continuous monitoring.It is a threat detection service that continuously monitors for 
++ malacious or unauthrorized behaviour to protect your AWS accounts and workloads. 
++ 2. With GuardDuty, we cna have an intelligent and cost-effective option for continuous threat detection in the AWS Cloud. The service uses machine learning, anomaly detection, 
++ and integrated threat intelligence to identify and prioritize potential threats. 
++ 3. GuardDuty analyzes tens of billions of events across multiple AWS data sources, such as AWS CloudTrail, Amazon VPC Flow Logs, and DNS logs and captured information aboit IP 
++ traffic going to and from EC2 network interfaces in VPC.
++ 4. GuardDuty alerts are actionable, easy to aggregate across multiple accounts, and straightforward to push into existing event management and workflow systems.
+```
+![guardduty](snapshots/goswami_guardduty.png)
  
-Submit text answers in E3T1.txt.
+Submit text answers in E3T1.txt.[Done]
  
-**Deliverables:**
+**Deliverables:** [Done]
 - **E3T1_guardduty.png** - Screenshot of Guard Duty findings specific to the Exercise 3, Task 1 attack.
 - **E3T1.txt** - Answer to the questions at the end of Exercise 3, Task 1.
  
@@ -307,18 +318,21 @@ Imagine a scenario where API keys used by the application server to read data fr
  
 #### 1. Run the following API calls to view and download files from the secret recipes S3 bucket.  You will need the name of the S3 bucket for this.
  
-```
+```diff
 # view the files in the secret recipes bucket
 aws s3 ls  s3://<BucketNameRecipesSecret>/ --region us-east-1
- 
++ command: aws s3 ls  s3://cand-c3-secret-recipes-914415844393/ --region us-east-1
+
 # download the files
 aws s3 cp s3://<BucketNameRecipesSecret>/secret_recipe.txt  .  --region us-east-1
++ command: aws s3 cp s3://cand-c3-secret-recipes-914415844393/secret_recipe.txt  .  --region us-east-1
 
 # view contents of the file
 cat secret_recipe.txt
 ```
 Take a screenshot showing the breach:
 E3T2_s3breach.png
+![E3T2_s3breach](snapshots/E3T2_s3breach.png)
 
 _Optional Stand Out Suggestion_ Task 3:
 Choose one of the application vulnerability attacks outlined in the OWASP top 10 (e.g. SQL injection, cross-site scripting)
@@ -327,8 +341,9 @@ Setup the AWS WAF in front of the ALB URL.
 Repeat the malicious URL attempts
 Observe the WAF blocking these requests.
 Submit screenshots of your attempts and monitoring or logs from the WAF showing the blocked attempts.
-
-**Deliverables:**
+* https://sucuri.net/guides/what-is-cross-site-scripting/
+* https://www.google.com/about/appsecurity/learning/xss/
+**Deliverables:** [Done]
 - **E3T2_s3breach.png** - Screenshot showing the resulting breach after the brute force attack.
 - _Optional_ **Task 3** - Screenshots showing attack attempts and monitoring or logs from the WAF showing blocked attempts.
 
