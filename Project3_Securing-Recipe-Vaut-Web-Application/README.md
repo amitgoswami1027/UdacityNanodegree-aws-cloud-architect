@@ -529,11 +529,10 @@ Submit your design as a ppt or png image named DevSecOpsPipeline.[ppt or png].
 
 **Deliverables**:
 - **DevSecOpsPipline.[ppt or png]** - Your updated pipeline.
+![image](https://user-images.githubusercontent.com/13011167/85231853-333be700-b418-11ea-8875-3ef10bf4b32e.png)
 
 ### Task 2 - Tools and Documentation
-      
 You will need to determine appropriate tools to incorporate into the pipeline to ensure that security vulnerabilities are found.
-
 1. Identify tools that will allow you to do the following:
  a. Scan infrastructure as code templates.
  b. Scan AMI’s or containers for OS vulnerabilities.
@@ -541,12 +540,10 @@ You will need to determine appropriate tools to incorporate into the pipeline to
 2. For each tool - identify an example compliance violation or vulnerability which it might expose.
 
 Submit your answers in E5T2.txt
-
-**Deliverables**:
+**Deliverables**: [Done]
 - **E5T2.txt** - Answer from prompts in Exercise 5, Task 2.
 
 ### _Optional Standout Suggestion_ Task 3 - Scanning Infrastructure Code
-
 - Run an infrastructure as code scanning tool on the cloud formation templates provided in the starter.
 - Take a screenshot of the tool that has correctly identified bad practices.
 - If you had completed the remediations by updating the cloud formation templates, run the scanner and compare outputs showing that insecure configurations were fixed.
