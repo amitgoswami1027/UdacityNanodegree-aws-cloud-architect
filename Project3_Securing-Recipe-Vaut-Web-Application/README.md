@@ -209,15 +209,19 @@ b. On the next page, click **Enable Security Hub**
  g. Click **Next** and **Create**.
 #### 4. Enable AWS Guard Duty
 a. After 1-2 hours, data will populate in these tools giving you a glimpse of security vulnerabilities in your environment.
- 
+#### E2-Task-01: [Done] 
+
 ### Task 2: Identify and Triage Vulnerabilities
- 
 Please submit screenshots of:
 - AWS Config - showing non-compliant rules
 - AWS Inspector - showing scan results
 - AWS Security Hub - showing compliance standards for CIS foundations.
  
 Name the files E2T2_config.png, E2T2_inspector.png, E2T2_securityhub.png respectively.
+#### E2-Task-02:Snapshots : 
+![E2T2_config](Project03_Deliverables/E2T2_config.png)
+![E2T2_inspector](Project03_Deliverables/E2T2_inspector.png)
+![E2T2_securityhub](Project03_Deliverables/E2T2_securityhub.png)
  
 Research and analyze which of the vulnerabilities appear to be related to the code that was deployed for the environment in this project. Provide recommendations on how to remediate the vulnerabilities. Submit your findings in E2T2.txt
  
@@ -226,7 +230,34 @@ Research and analyze which of the vulnerabilities appear to be related to the co
 - **E2T2_inspector.png** - Screenshot of AWS Inspector showing scan results.
 - **E2T2.png_securityhub.png** - Screenshot of AWS Security Hub showing compliance standards for CIS foundations.
 - **E2T2.txt** - Provide recommendations on how to remediate the vulnerabilities.
- 
+```diff 
+Research and analyze which of the vulnerabilities appear to be related to the code that was deployed for the environment in this project.
+Security Hub Highlight some of the following top security vulnerabilities:
+! HIGH
++ 2.1 Ensure CloudTrail is enabled in all regions
++ CloudTrail.1 CloudTrail should be enabled and configured with at least one multi-region trail
++ 4.2 Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389
++ 4.1 Ensure no security groups allow ingress from 0.0.0.0/0 to port 22
+
+! MEDIUM
++ IAM.7 Password policies for IAM users should have strong configurations
++ 2.9 Ensure VPC flow logging is enabled in all VPCs
++ IAM.5 MFA should be enabled for all IAM users that have console password
++ ELBv2.1 Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
++ SSM.1 EC2 instances should be managed by AWS Systems Manager
++ S3.4 S3 buckets should have server-side encryption enabled
+
+! LOW
++ API EnableSecurityHub was invoked using root credentials.
+
+! Bonus - provide recommendations on how to remediate the vulnerabilities.
++ 1. Setting the appropiate IAM policy, do not use root user, create a child user and set the IAM policices for not allowing root user.
++ 2. Streamling the network communication between the entities by redirecting HTTP to HTTPS requests.
++ 3. Security Groups should be streamline and should not allow everything. 
++ 4. EC2 instance security groups should be alligned to only allow traffic from the specific entities as required.
++ 5. Enable VPC Flowlogs and s3 Bucket logging.
++ 6. TCP port 5000 is reachable from the internet on the EC2 instance. 
+``` 
 ## Exercise 3 - Attack Simulation
  
 Now you will run scripts that will simulate the following attack conditions:
