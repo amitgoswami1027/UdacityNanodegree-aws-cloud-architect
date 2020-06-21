@@ -1,0 +1,18 @@
+Name: Amit Goswami
+Course: AWS Architect NanoDegree
+
+Question: # Identify tools that will allow you to do the following:
+
+1. ##Scan infrastructure as code templates
+Solution: I would prefer to use Regula for scanning the IAC template.
+###Example vulnerability
+Solution: Ingress from all IP addresses and ports (0.0.0.0/0)
+
+2. ##Scan AMI’s or containers for OS vulnerabilities
+Solution: I would prefer Ansible for scanning the AMIs for OS vulnerabilities.
+###Example vulnerability
+Solution: SSH root access with password logon.
+
+3. ##Scan an AWS environment for cloud configuration vulnerabilities
+Solution: AWS Config 
+### Example vulnerability
