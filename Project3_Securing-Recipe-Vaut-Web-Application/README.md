@@ -347,7 +347,6 @@ Submit screenshots of your attempts and monitoring or logs from the WAF showing 
 - _Optional_ **Task 3** - Screenshots showing attack attempts and monitoring or logs from the WAF showing blocked attempts.
 
 ## Exercise 4 - Implement Security Hardening
-
 **_Deliverables for Exercise 4:_**
 - **E4T1.txt** - Answer to the prompts in Exercise 4, Task 1.
 - **E4T2_sshbruteforce.png** - Screenshot of terminal window showing the brute force attack and the remediation.
@@ -364,31 +363,40 @@ Submit screenshots of your attempts and monitoring or logs from the WAF showing 
 - _Optional_ **E4T5.txt** - Additional hardening suggestions from Exercise 4, Task 5.
 
 ### Task 1 - Remediation plan
-
 As a Cloud Architect, you have been asked to apply security best practices to the environment so that it can withstand attacks and be more secure.
 1. Identify 2-3 changes that can be made to our environment to prevent an SSH brute force attack from the internet.
 2. Neither instance should have had access to the secret recipes bucket; even in the instance that API credentials were compromised how could we have prevented access to sensitive data?
 
 Submit answer in E4T1.txt
+```diff
+! Problem: # Identify 2-3 changes that can be made to our environment to prevent an ssh brute force attack from the internet.
++ Solution:
++ 1. SSH port should not be open to all 0.0.0.0/0. If we can restrict the SSH port so that outside entity should not be able to connect to the instance over SSH, it will help to 
++ make our EC2 instances secure.
++ 2. Security Group need to be changed and should only allow restricted access as per the least privilage policy.
++ 3. Disable SSH password login on the application server instance.
 
+! Problem: # Neither instance should have had access to the secret recipes bucket, in the even that instance API credentials were compromised how could we have prevented access 
+to sensitive data.
++ Solutions:
++ Need to follow the least privilage policy. Security groups need to be fine tuned to be able to access the S3 buckets with Free Recipes.
+```
 **Deliverables:**
 - **E4T1.txt** - Answer to the prompts in Exercise 4, Task 1.
 
 ### Task 2 - Hardening
-
 #### Remove SSH Vulnerability on the Application Instance
-
 1. To disable SSH password login on the application server instance.
 
-```
+```diff
 # open the file /etc/ssh/sshd_config
 sudo vi /etc/ssh/sshd_config
 
 # Find this line:
-PasswordAuthentication yes
++ PasswordAuthentication yes
 
 # change it to:
-PasswordAuthentication no
++ PasswordAuthentication no
 
 # save and exit
 
@@ -396,14 +404,13 @@ PasswordAuthentication no
 sudo service ssh restart
 ```
 2. Test that this made a difference.  Run the brute force attack again from Exercise 3, Task 1.  
-
 3. Take a screenshot of the terminal window where you ran the attack highlighting the remediation and name it E4T2_sshbruteforce.png.
 
 **Deliverables:**
 - **E4T2_sshbruteforce.png** - Screenshot of terminal window showing the brute force attack and the remediation.
+![E4T2_sshbruteforce](Project03_Deliverables/E4T2_sshbruteforce.png)
 
 #### Apply Network Controls to Restrict Application Server Traffic
-
 1. Update the security group which is assigned to the web application instance.  The requirement is that we only allow connections to port 5000 from the public subnet where the application load balancer resides.
 2. Test that the change worked by attempting to make an SSH connection to the web application instance using its public URL.
 3. Submit a screenshot of the security group change and your SSH attempt.
@@ -411,9 +418,10 @@ sudo service ssh restart
 **Deliverables**:
 - **E4T2_networksg.png** - Screenshot of the security group change. 
 - **E4T2_sshattempt.png** - Screenshot of your SSH attempt.
+![E4T2_networksg](Project03_Deliverables/E4T2_networksg.png)
+![E4T2_sshattempt](Project03_Deliverables/E4T2_sshattempt.png)
 
 #### Least Privilege Access to S3  
-
 1. Update the IAM policy for the instance profile role used by the web application instance to only allow read access to the free recipes S3 bucket.
 2. Test the change by using the attack instance to attempt to copy the secret recipes.
 3. Submit a screenshot of the updated IAM policy and the attempt to copy the files. 
@@ -421,9 +429,10 @@ sudo service ssh restart
 **Deliverables:**
 - **E4T2_s3iampolicy.png** - Screenshot of the updated IAM policy.
 - **E4T2_s3copy.png** - Screenshot of the failed copy attempt.
+![E4T2_s3iampolicy](Project03_Deliverables/E4T2_s3iampolicy.png)
+![E4T2_s3copy](Project03_Deliverables/E4T2_s3copy.png)
 
 #### Apply Default Server-side Encryption to the S3 Bucket
-
 This will cause the S3 service to encrypt any objects that are stored going forward by default.
 Use the below guide to enable this on both S3 buckets.   
 [Amazon S3 Default Encryption for S3 Buckets](https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html)
@@ -432,9 +441,9 @@ Capture the screenshot of the secret recipes bucket showing that default encrypt
 
 **Deliverables**:
 - **E4T2_s3encryption.png** - Screenshot of the S3 bucket policy.
+![E4T2_s3encryption](Project03_Deliverables/E4T2_s3encryption.png)
 
 ### Task 3: Check Monitoring Tools to see if the Changes that were made have Reduced the Number of Findings
-
 1. Go to AWS inspector and run the inspector scan that was run in Exercise 2.
 2. After 20-30 mins - check Security Hub to see if the finding count reduced.
 3. Check AWS Config rules to see if any of the rules are now in compliance.
@@ -446,7 +455,6 @@ Capture the screenshot of the secret recipes bucket showing that default encrypt
 - **E4T3_inspector.png** - Screenshot of Inspector after reevaluating the number of findings.
 
 ### Task 4: Questions and Analysis
-
 1. What additional architectural change can be made to reduce the internet-facing attack surface of the web application instance.
 2. Assuming the IAM permissions for the S3 bucket are still insecure, would creating VPC private endpoints for S3 prevent the unauthorized access to the secrets bucket.
 3. Will applying default encryption setting to the s3 buckets encrypt the data that already exists?
