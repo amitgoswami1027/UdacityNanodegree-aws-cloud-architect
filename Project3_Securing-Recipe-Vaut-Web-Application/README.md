@@ -1,4 +1,42 @@
 ## AWS ARCHITECT NANODEGREE - PROJECT#3 (MYNOTES & REFERENCE FOR REVIEWER)
+=============================================================================================================================================================
+### Review Comments Implementation
+#### Comment-01: Good Job! However, your screenshot shows security group which allows anyone to communicate with your server over HTTP. Security Group should only allow traffic from port 5000 and subnet where load balancer resides.
+* Solution: Done- Please see the screenshot attached. (E4T2_networksg.png updated)
+![image](https://user-images.githubusercontent.com/13011167/85252211-ec320e00-b478-11ea-98e5-47d4b4cd4dec.png)
+#### Comment-02: Great Job! Please also include Post-deployment compliance scanning in your diagram. (DevOpsPipeline.ppt Updated)
+*  In a layered security approach, companies work to mitigate intrusion into their technology systems.Security in layers is the practice of applying multiple 
+security measures, with each layer overlapping the previous and the next to create a net of security controls that work together to secure technology systems. I would categorize the security scanning into four categories:
+   * Inline- Scanning: This first layer should include tools and scanners that take seconds (or maybe a few minutes) to run. Some common examples are code linters, 
+     unit tests, static code analyzers like SonarQube, third-party dependency vulnerability checking like OWASP Dependency Checker, and possibly a subset of 
+     integration tests.
+   * Pre-deployment scanning: The second layer of DevSecOps includes tools that run inline with our deployment pipeline and take minutes to maybe an hour to 
+     complete. This might include a more in-depth third-party vulnerability scan, Docker image scan, and malware scan.One key to this layer is that the scanners 
+     and tools operate after the build artifacts are generated and before they are stored anywhere like Artifactory.
+   * Post-deployment scanning: The tools in this layer include performance and integration testing and application scanners like OWASP Zap or AWS WAF. This layer 
+     should run quickly, hopefully in an hour or less, to provide fast feedback to developers and limit the impact on our CD process.
+   * Continuous scanning (Post Production): Most of the scanners are embedded in the CI/CD Pipeline. CS tools include tools like Nessus, Qualys, IBM App Scan, and 
+     other infrastructure, application, and network scanning tools. CS surrounds it as an asynchronous, ongoing process and provides continual feedback to 
+     developers. There are many vendors, such as Akamai or Cloudflare, which web clients point to as an entry point into your application. These are designated as 
+     CDN providers, however they provide WAF capabilities as part of their offering. Cloud providers such as AWS also provide this type of service natively. AWS 
+     WAF can be placed in front of public facing application services such as CloudFront and API Gateway transparently so that application endpoints do not need to 
+     change.
+#### Comment-03: Good Job with the tools. Please also share an example vulnerability for AWS Config. (E5T2.txt updated)
+* Solution: 3. Scan an AWS environment for cloud configuration vulnerabilities
+Solution: AWS Config (AWS Config evaluates whether your resource configurations comply with relevant rules and summarizes the compliance results)
+### Example vulnerability
+* EC2 or other resorces are compromised. Checks whether the incoming SSH traffic for the security groups is accessible. The rule is compliant when the IP addresses 
+of the incoming SSH traffic in the security groups are restricted. 
+* AWS Config collects configuration snapshots of many of the core infrastructure services that AWS provides. It provide insight into the resource is configured, 
+when it changed, and what was changed. The configuration snapshot serves as an input to rules which evaluate whether the configuration is in compliance or out of 
+compliance with the conditions specified in the rule. 
+* AWS inspector is intended to specifically analyze and report on vulnerabilities on EC2 instances. AWS Inspector is designed to identify vulnerabilities at the OS 
+level.Inspector can also provide a report on network reachability the public internet to instances and load balancers along with specific ports that are 
+reachable.Once the inspector agent is installed on an instance, it can scan against:CIS benchmarks for linux and windows,AWS security best practices an Common 
+vulnerabilities and exposures or CVE findings.
+
+======================================================================================================================================================
+
 # Cloud Security - Secure the Recipe Vault Web Application
 In this project, you will:
 * Deploy and assess a simple web application environment’s security posture
@@ -563,3 +601,5 @@ Once your project has been submitted and reviewed - to prevent undesired charges
 
 Bake one of the desserts from the recipe text files and submit a picture. :-)
 
+### Important Links
+#### Vulnerability Management: https://stackarmor.com/vulnerability-management-and-penetration-testing-on-aws-cloud/
