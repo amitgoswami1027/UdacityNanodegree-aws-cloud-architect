@@ -1,5 +1,5 @@
 ## AWS ARCHITECT NANODEGREE - PROJECT#3 (MYNOTES & REFERENCE FOR REVIEWER)
-=============================================================================================================================================================
+==========================================================================
 ### Review Comments Implementation
 #### Comment-01: Good Job! However, your screenshot shows security group which allows anyone to communicate with your server over HTTP. Security Group should only allow traffic from port 5000 and subnet where load balancer resides.
 * Solution: Done- Please see the screenshot attached. (E4T2_networksg.png updated)
@@ -35,7 +35,7 @@ level.Inspector can also provide a report on network reachability the public int
 reachable.Once the inspector agent is installed on an instance, it can scan against:CIS benchmarks for linux and windows,AWS security best practices an Common 
 vulnerabilities and exposures or CVE findings.
 
-======================================================================================================================================================
+================================================================================
 
 # Cloud Security - Secure the Recipe Vault Web Application
 In this project, you will:
