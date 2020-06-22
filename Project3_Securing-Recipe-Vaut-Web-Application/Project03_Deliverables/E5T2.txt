@@ -14,5 +14,14 @@ Solution: I would prefer Ansible for scanning the AMIs for OS vulnerabilities.
 Solution: SSH root access with password logon.
 
 3. ##Scan an AWS environment for cloud configuration vulnerabilities
-Solution: AWS Config 
+Solution: AWS Config (AWS Config evaluates whether your resource configurations comply with relevant rules and summarizes the compliance results)
+### Example vulnerability
+EC2 or other resorces are compromised. Checks whether the incoming SSH traffic for the security groups is accessible. The rule is compliant when the IP addresses of the incoming SSH traffic in the security groups are restricted. 
+AWS Config collects configuration snapshots of many of the core infrastructure services that AWS provides. It provide insight into the resource is configured, when 
+it changed, and what was changed. The configuration snapshot serves as an input to rules which evaluate whether the configuration is in compliance or out of 
+compliance with the conditions specified in the rule. 
+AWS inspector is intended to specifically analyze and report on vulnerabilities on EC2 instances. AWS Inspector is designed to identify vulnerabilities at the OS 
+level.Inspector can also provide a report on network reachability the public internet to instances and load balancers along with specific ports that are 
+reachable.Once the inspector agent is installed on an instance, it can scan against:CIS benchmarks for linux and windows,AWS security best practices an Common 
+vulnerabilities and exposures or CVE findings.
 
