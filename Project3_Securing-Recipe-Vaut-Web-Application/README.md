@@ -1,10 +1,10 @@
 ## AWS ARCHITECT NANODEGREE - PROJECT#3 (MYNOTES & REFERENCE FOR REVIEWER)
-
+=============================================================================================================================================================
 ### Review Comments Implementation
 #### Comment-01: Good Job! However, your screenshot shows security group which allows anyone to communicate with your server over HTTP. Security Group should only allow traffic from port 5000 and subnet where load balancer resides.
-* Solution: Done- Please see the screenshot attached.
+* Solution: Done- Please see the screenshot attached. (E4T2_networksg.png updated)
 ![image](https://user-images.githubusercontent.com/13011167/85252211-ec320e00-b478-11ea-98e5-47d4b4cd4dec.png)
-#### Comment-02: Great Job! Please also include Post-deployment compliance scanning in your diagram.
+#### Comment-02: Great Job! Please also include Post-deployment compliance scanning in your diagram. (DevOpsPipeline.ppt Updated)
 *  In a layered security approach, companies work to mitigate intrusion into their technology systems.Security in layers is the practice of applying multiple 
 security measures, with each layer overlapping the previous and the next to create a net of security controls that work together to secure technology systems. I would categorize the security scanning into four categories:
    * Inline- Scanning: This first layer should include tools and scanners that take seconds (or maybe a few minutes) to run. Some common examples are code linters, 
@@ -21,8 +21,7 @@ security measures, with each layer overlapping the previous and the next to crea
      CDN providers, however they provide WAF capabilities as part of their offering. Cloud providers such as AWS also provide this type of service natively. AWS 
      WAF can be placed in front of public facing application services such as CloudFront and API Gateway transparently so that application endpoints do not need to 
      change.
-     
-#### Comment-03: Good Job with the tools. Please also share an example vulnerability for AWS Config. 
+#### Comment-03: Good Job with the tools. Please also share an example vulnerability for AWS Config. (E5T2.txt updated)
 * Solution: 3. Scan an AWS environment for cloud configuration vulnerabilities
 Solution: AWS Config (AWS Config evaluates whether your resource configurations comply with relevant rules and summarizes the compliance results)
 ### Example vulnerability
@@ -36,7 +35,7 @@ level.Inspector can also provide a report on network reachability the public int
 reachable.Once the inspector agent is installed on an instance, it can scan against:CIS benchmarks for linux and windows,AWS security best practices an Common 
 vulnerabilities and exposures or CVE findings.
 
-
+======================================================================================================================================================
 
 # Cloud Security - Secure the Recipe Vault Web Application
 In this project, you will:
