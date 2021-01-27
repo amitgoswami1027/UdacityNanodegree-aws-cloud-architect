@@ -1,5 +1,5 @@
-## AWS CLOUD ARCHITECT - NanoDegree (MyNotes)
-
+## Udacity NanoDegree - AWS CLOUD ARCHITECT (MyNotes)
+## Graduated: https://graduation.udacity.com/nd063
 # Design For Availability,Reliability and Resiliency
 * Availability: A measure of time that a system is operating as expected. Typically measured as a percentage.
 * Reliability: A measure of how likely something is to be operating as expected at any given point in time. Said differently, 
